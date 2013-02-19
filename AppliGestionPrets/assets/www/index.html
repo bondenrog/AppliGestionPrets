@@ -51,13 +51,13 @@
                 <h1>Prêt en cours</h1>
             </div>
 			
-            <div data-role="content">
+            
 				<ul data-role="listview">
-					<li><a href="index.html#detail">Mon pret</a></li>
+					<li><a href="#detail" data-transition="none">Mon pret</a></li>
 					<li><a href="#">Audi</a></li>
 					<li><a href="#">BMW</a></li>
 				</ul>
-			</div>
+			
 			
 			<div data-role="footer" data-position="fixed">
 				<div data-role="navbar" data-iconpos="top">
@@ -71,32 +71,7 @@
 			</div>
 					
         </div>
-        <!-- /page -->
-        
-    	<!-- Page d'Accueil -->	
-		<div data-role="page" id="detail">
-		
-            <div data-role="header">
-                <h1>Detail</h1>
-            </div>
-			
-            <div data-role="content">
-                <p>Détail du pret</p>      
-            </div>
-			
-			<div data-role="footer" data-position="fixed">
-				<div data-role="navbar" data-iconpos="top">
-					<ul>
-						<li><a href="#home" data-icon="home" data-transition="none" class="ui-btn-active ui-state-persist">Accueil</a></li>
-						<li><a href="#consultation" data-icon="grid" data-transition="none">Consulter</a></li>
-						<li><a href="#ajout" data-icon="plus" data-transition="none">Ajouter</a></li>
-
-					</ul>
-				</div>
-			</div>		
-        </div>
-        <!-- /page -->        
-        
+        <!-- /page -->    
         
         <!-- Page de Ajout d'un prêt -->	
 		<div data-role="page" id="ajout">
@@ -120,6 +95,31 @@
 			</div>		
         </div>
         <!-- /page -->
+        
+        
+        <!-- Page détail -->	
+		<div data-role="page" id="detail">
+		
+            <div data-role="header">
+                <h1>Detail</h1>
+            </div>
+			
+            <div data-role="content">
+                <p>Détail du pret</p>      
+            </div>
+			
+			<!-- <div data-role="footer" data-position="fixed">
+				<div data-role="navbar" data-iconpos="top">
+					<ul>
+						<li><a href="#home" data-icon="home" data-transition="none" class="ui-btn-active ui-state-persist">Accueil</a></li>
+						<li><a href="#consultation" data-icon="grid" data-transition="none">Consulter</a></li>
+						<li><a href="#ajout" data-icon="plus" data-transition="none">Ajouter</a></li>
+
+					</ul>
+				</div>
+			</div> -->		
+        </div>
+        <!-- /page --> 
         	
     </body>
 </html>
