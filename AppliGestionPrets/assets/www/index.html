@@ -14,48 +14,8 @@
         <script type="text/javascript" src="js/jquery/jquery.mobile-1.2.0.js"></script>
 		<script type="text/javascript" src="js/index.js"></script>
 		<script type="text/javascript" src="js/fonctions.js"></script>
-        <script type="text/javascript">
-
-		    /*
-		    function onDeviceReady() {
-		        var db = window.openDatabase("BDDPrets", "1.0", "Database Prets", 200000);
-		        doLog("db opened");
-				db.transaction(setupTables, errorCB, successCB);
-				doLog("tables setuped");
-		    }
-		    
-		    function setupTables(tx) {
-				doLog("CREATE TABLE Categorie");
-		        tx.executeSql('CREATE TABLE IF NOT EXISTS Categorie (id INTEGER PRIMARY KEY AUTOINCREMENT, intitule TEXT NOT NULL)');
-		   		tx.executeSql('INSERT INTO Categorie(intitule) VALUES ("FILMS")');
-		   		tx.executeSql('INSERT INTO Categorie(intitule) VALUES ("MUSIQUES")');
-		    }
-		    
-			function getCategories() {
-				doLog("get CATEGORIES");
-				dbShell.transaction(function(tx) {
-					tx.executeSql("select intitule from categorie",[],printEntries,dbErrorHandler);
-				}, dbErrorHandler);
-			}
-
-			 // Query the success callback
-		    function printEntries,(tx, results) {
-			  	doLog("render entries");
-				if (results.rows.length == 0) {
-					
-				} else {
-				   var s = "";
-				   for(var i=0; i<results.rows.length; i++) {
-						s += "<option value="+results.rows.item(i).intitule+">"+results.rows.item(i).intitule+"</option>";
-				   }
-				   $("#select-choice-0").html(s);
-				   $("#select-choice-0").listview("refresh");
-				}
-			}
-			*/
-		    
-		    
-
+        <script type="text/javascript">		    
+			//fonctions
         </script>
 	</head>
     <body>
@@ -93,7 +53,7 @@
             </div>
 			
             <div data-role="content">
-				<ul data-role="listview" id="listePrets">
+				<ul data-role="listview" id="listePrets" >
 					<!-- <li><a href="#detail" data-transition="none">Mon pret</a></li>
 					<li><a href="#">Audi</a></li>
 					<li><a href="#">BMW</a></li> -->
@@ -148,33 +108,7 @@
 			</div>		
         </div>
         <!-- /page -->
-        
-        <!-- Page de nouveau contact -->	
-		<div data-role="page" id="home">
-		
-            <div data-role="header">
-                <h1>Nouveau contact</h1>
-            </div>
-			
-            <div data-role="content">
-                <p>It's me</p>      
-            </div>
-			
-			<div data-role="footer" data-position="fixed">
-				<div data-role="navbar" data-iconpos="top">
-					<ul>
-						<li><a href="#home" data-icon="home" data-transition="none" class="ui-btn-active ui-state-persist">Accueil</a></li>
-						<li><a href="#consultation" data-icon="grid" data-transition="none">Consulter</a></li>
-						<li><a href="#ajout" data-icon="plus" data-transition="none">Ajouter</a></li>
-
-					</ul>
-				</div>
-			</div>		
-        </div>
-        <!-- /page -->
-        
-        
-        
+               
         <!-- Page détail -->	
 		<div data-role="page" id="detail">
 		

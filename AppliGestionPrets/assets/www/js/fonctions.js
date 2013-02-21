@@ -57,14 +57,6 @@ function populateDB(tx)
 		")";
     tx.executeSql(sql);
     console.log("database created");
-    tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (18,'PC11','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (17,'PC10','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (16,'PC9','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (15,'PC8','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (14,'PC7','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (13,'PC6','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (12,'PC5','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (11,'PC4','Steven','Wells')");
     tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (10,'PC3','Steven','Wells')");
     tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (9,'PC2','Steven','Wells')");
     tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (8,'PC1','Steven','Wells')");
