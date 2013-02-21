@@ -13,8 +13,10 @@
 		<script type="text/javascript" src="js/jquery/jquery-1.8.2.js"></script>
         <script type="text/javascript" src="js/jquery/jquery.mobile-1.2.0.js"></script>
 		<script type="text/javascript" src="js/index.js"></script>
+		<script type="text/javascript" src="js/fonctions.js"></script>
         <script type="text/javascript">
 
+		    /*
 		    function onDeviceReady() {
 		        var db = window.openDatabase("BDDPrets", "1.0", "Database Prets", 200000);
 		        doLog("db opened");
@@ -50,12 +52,13 @@
 				   $("#select-choice-0").listview("refresh");
 				}
 			}
+			*/
 		    
 		    
 
         </script>
 	</head>
-    <body onload="init();">
+    <body>
     
     	<!-- Page d'Accueil -->	
 		<div data-role="page" id="home">
@@ -89,13 +92,13 @@
                 <h1>Prêt en cours</h1>
             </div>
 			
-            
-				<ul data-role="listview">
-					<li><a href="#detail" data-transition="none">Mon pret</a></li>
+            <div data-role="content">
+				<ul data-role="listview" id="listePrets">
+					<!-- <li><a href="#detail" data-transition="none">Mon pret</a></li>
 					<li><a href="#">Audi</a></li>
-					<li><a href="#">BMW</a></li>
+					<li><a href="#">BMW</a></li> -->
 				</ul>
-			
+			</div>
 			
 			<div data-role="footer" data-position="fixed">
 				<div data-role="navbar" data-iconpos="top">
