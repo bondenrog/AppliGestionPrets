@@ -33,7 +33,12 @@ function getPrets_success(tx, results) {
     var len = results.rows.length;
     for (var i=0; i<len; i++) {
     	var pret = results.rows.item(i);
-    	$('#listePrets').append('<li><a href="#detail" data-transition="none">'+pret.title+'</a></li>');
+    	$('#listePrets').append('<li><a href="#detail" data-transition="none">' +
+    								'<h2>' + pret.title + '</h2>' +
+    								'<p><strong>' + pret.firstName + ' ' + pret.lastName + '</strong></p>' +
+    								'<p class="ui-li-aside">12/02/2012</p>' +
+    								'</a></li>');
+    	       
 		/*$('#employeeList').append('<li><a href="employeedetails.html?id=' + employee.id + '">' +
 				'<img src="pics/' + employee.picture + '" class="list-icon"/>' +
 				'<p class="line1">' + employee.firstName + ' ' + employee.lastName + '</p>' +
