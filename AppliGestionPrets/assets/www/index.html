@@ -53,9 +53,7 @@
 			
             <div data-role="content">
 				<ul data-role="listview" id="listePrets" >
-					<!-- <li><a href="#detail" data-transition="none">Mon pret</a></li>
-					<li><a href="#">Audi</a></li>
-					<li><a href="#">BMW</a></li> -->
+					<!-- Remplissage dynamique -->
 				</ul>
 			</div>
 			
@@ -93,6 +91,11 @@
 						<!-- Remplissage dynamique -->
 					</select>   
 				</div>
+				
+				<div data-role="fieldcontain">
+					<label for="slider">Durée :</label>
+					<input type="range" name="slider" id="slider" value="30" min="1" max="365" data-highlight="true"  />
+				</div>
 
 				<div data-role="fieldcontain">
 	                <label for="listeContacts">Contact</label>
@@ -100,6 +103,9 @@
 						<!-- Remplissage dynamique -->
 					</select>
 				</div>
+				
+				
+					<button id="verify" type="submit" data-theme="d" >Enregistrer</button>
 				
 			</div>
 			
@@ -124,18 +130,7 @@
 			
             <div data-role="content">
                 <p>Détail du pret</p>      
-            </div>
-			
-			<!-- <div data-role="footer" data-position="fixed">
-				<div data-role="navbar" data-iconpos="top">
-					<ul>
-						<li><a href="#home" data-icon="home" data-transition="none" class="ui-btn-active ui-state-persist">Accueil</a></li>
-						<li><a href="#consultation" data-icon="grid" data-transition="none">Consulter</a></li>
-						<li><a href="#ajout" data-icon="plus" data-transition="none">Ajouter</a></li>
-
-					</ul>
-				</div>
-			</div> -->		
+            </div>		
         </div>
         <!-- /page --> 
         	

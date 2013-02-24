@@ -56,16 +56,16 @@ function DB_createTables(tx)
 		")";
     tx.executeSql(sql);
     console.log("Table PRET created");
-    tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (10,'PC3','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (9,'PC2','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (8,'PC1','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (7,'CD','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (6,'Cartes','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (5,'Dés','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (4,'Cable USB','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (3,'BMW','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (2,'Argent','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (id,title,firstName,lastName) VALUES (1,'Livre1','Steven','Wells')");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('PC3','Steven','Wells')");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('PC2','Steven','Wells')");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('PC1','Steven','Wells')");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('CD','Steven','Wells')");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('Cartes','Steven','Wells')");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('Dés','Steven','Wells')");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('Cable USB','Steven','Wells')");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('BMW','Steven','Wells')");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('Argent','Steven','Wells')");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('Livre1','Steven','Wells')");
 	
 	tx.executeSql('DROP TABLE IF EXISTS Categorie');
 	var sql = 
@@ -80,7 +80,8 @@ function DB_createTables(tx)
 	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Film')");
 	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Jeux')");
 	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Informatique')");
-	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Divers')");  
+	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Argent')");
+	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Autre')");  
 }
 
 // Succès de la création des tables de la base de données
@@ -137,3 +138,20 @@ function getCategorie_success(tx, results) {
     }
 	db = null;
 }
+
+function createPret(tx) {
+	console.log("exec query createPret");
+	tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('Babouin','Pikachu','Wells')");
+	tx.executeSql(sql, [], getPret_success);
+}
+
+// Affichage des catégories dans le HTML
+function getPret_success(tx, results) {
+	// actualisation et forcer la reconstruction
+	console.log("MAJ listePret");
+	$("#listePret").selectmenu('refresh', true);
+}
+
+$('#verify').click(function() {
+    console.log('Button has been clicked');
+});
