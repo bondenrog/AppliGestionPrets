@@ -145,19 +145,27 @@ function getCategorie_success(tx, results) {
 }
 
 $(function(){ // <-- this is a shortcut for $(document).ready(function(){ ... });
-    $('#button').click(function(){
-        alert('button clicked');
-		DB_openDatabase();
-		db.transaction(DB_createPret, DB_transaction_error, DB_createPret_success);
+    $('#consultation').click(function(){
+        alert('button consult clicked');
+		//DB_openDatabase();
+		//db.transaction(DB_createPret, DB_transaction_error, DB_createPret_success);
     });
 });
+
+function checkCreationPret(){
+		DB_openDatabase();
+		db.transaction(DB_createPret, DB_transaction_error, DB_createPret_success);
+}
 
 function DB_createPret(tx) {
 	console.log("exec query createPret");
 	tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('Babouin','Pikachu','Wells')");
-	$('#listePrets').empty();
 }
 
 function DB_createPret_success(){
-	 db.transaction(getPrets, DB_transaction_error);
+	$('#listePrets').empty();
+	db.transaction(getPrets, DB_transaction_error);
+	//$('#listePrets').listview('refresh');
+	alert('Le prêt a été inséré avec succès');
+	
 }

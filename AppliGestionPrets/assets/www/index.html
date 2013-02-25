@@ -104,17 +104,20 @@
 					</select>
 				</div>
 				
-				<a href="#" id="button" data-role="button" data-theme="c"> Save </a> 
-				<button id="verify" type="submit" data-theme="d" >Enregistrer</button>
+				
+				<fieldset class="ui-grid-a">
+						<div class="ui-block-a"><input type="submit"  data-theme="d" value="Annuler" id="btn_submit" onclick="document.location.href = 'index.html'"/></div>
+						<div class="ui-block-b"><input type="submit"  data-theme="a" value="Valider" id="btn_submit" onclick="checkCreationPret()"/></div>
+				</fieldset>
 				
 			</div>
 			
 			<div data-role="footer" data-position="fixed">
 				<div data-role="navbar" data-iconpos="top">
 					<ul>
-						<li><a href="#home" data-icon="home" data-transition="none">Accueil</a></li>
-						<li><a href="#consultation" data-icon="grid" data-transition="none">Consulter</a></li>
-						<li><a href="#ajout" data-icon="plus" data-transition="none" class="ui-btn-active ui-state-persist">Ajouter</a></li>
+						<li><a href="#home" id="home" data-icon="home" data-transition="none">Accueil</a></li>
+						<li><a href="#consultation" id="consultation" data-icon="grid" data-transition="none" >Consulter</a></li>
+						<li><a href="#ajout" id = "ajout" data-icon="plus" data-transition="none" class="ui-btn-active ui-state-persist">Ajouter</a></li>
 					</ul>
 				</div>
 			</div>		
