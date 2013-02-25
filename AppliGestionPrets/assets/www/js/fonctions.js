@@ -53,16 +53,16 @@ function DB_createTables(tx)
     
     console.log("Table PRET created");
     
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('PC3','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('PC2','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('PC1','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('CD','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('Cartes','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('Dés','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('Cable USB','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('BMW','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('Argent','Steven','Wells')");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('Livre1','Steven','Wells')");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('PC3','Steven','Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('PC2','Steven','Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('PC1','Steven','Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('CD','Steven','Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Cartes','Steven','Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Dés','Steven','Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Cable USB','Steven','Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('BMW','Steven','Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Argent','Steven','Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Livre1','Steven','Wells', date('now'), 1)");
 	
 	tx.executeSql('DROP TABLE IF EXISTS Categorie');
 	var sql = 
