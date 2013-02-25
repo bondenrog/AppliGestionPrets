@@ -28,10 +28,11 @@
             </div>
 			
             <div data-role="content">
-                <p>Hello le monde</p>      
+                <p>Hello le monde</p>   
+				<input type="submit"  data-theme="a" value="Remplir la base" id="populateDB" onclick="populateDB()"/>
             </div>
 			
-			<div data-role="footer" data-position="fixed">
+			<div data-role="footer" data-position="fixed" data-id="footer">
 				<div data-role="navbar" data-iconpos="top">
 					<ul>
 						<li><a href="#home" data-icon="home" data-transition="none" class="ui-btn-active ui-state-persist">Accueil</a></li>
@@ -57,7 +58,7 @@
 				</ul>
 			</div>
 			
-			<div data-role="footer" data-position="fixed">
+			<div data-role="footer" data-position="fixed" data-id="footer">
 				<div data-role="navbar" data-iconpos="top">
 					<ul>
 						<li><a href="#home" data-icon="home" data-transition="none">Accueil</a></li>
@@ -79,7 +80,7 @@
             </div>
 			
             <div data-role="content">
-            
+            <form 
 				<div data-role="fieldcontain">
 		         	<label for="intitule">Intitulé :</label>
 		         	<input type="text" name="intitule" id="intitule" value=""  />
@@ -107,12 +108,12 @@
 				
 				<fieldset class="ui-grid-a">
 						<div class="ui-block-a"><input type="submit"  data-theme="d" value="Annuler" id="btn_submit" onclick="document.location.href = 'index.html'"/></div>
-						<div class="ui-block-b"><input type="submit"  data-theme="a" value="Valider" id="btn_submit" onclick="checkCreationPret()"/></div>
+						<div class="ui-block-b"><input type="submit"  data-theme="a" value="Valider" id="btn_submit" onclick="createPret()"/></div>
 				</fieldset>
 				
 			</div>
 			
-			<div data-role="footer" data-position="fixed">
+			<div data-role="footer" data-position="fixed" data-id="footer">
 				<div data-role="navbar" data-iconpos="top">
 					<ul>
 						<li><a href="#home" id="home" data-icon="home" data-transition="none">Accueil</a></li>

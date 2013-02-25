@@ -1,5 +1,3 @@
-var dbCreated = false;
-
 // On attend que cordova se charge avant de lancer quoi que ce soit
 document.addEventListener("deviceready", onDeviceReady, false);
 
@@ -8,19 +6,14 @@ function onDeviceReady() {
 
 	DB_openDatabase();
 
-	// Gestion de la base de données
-    if (dbCreated){
-    	db.transaction(getPrets, DB_transaction_error);
-		db.transaction(getCategories, DB_transaction_error);
-	}
-    else{
-    	db.transaction(DB_createTables, DB_transaction_error, DB_createTables_success);
-	}
-	
-	// Récupération des contacts du téléphone
-    getContacts();		
-}
+	// Création de la base de données et création des différents éléments HTML
+	db.transaction(DB_createTables, DB_transaction_error, DB_createTables_success);
 
+	// Récupération des contacts du téléphone
+    getContacts();	
+
+	navigator.splashscreen.hide();
+}
 
 //**********************************//
 // Gestion Base de données
@@ -33,10 +26,35 @@ function DB_openDatabase(){
     console.log("database opened");
 }
 
+// Insertion de Prets pour le test de l'application
+function populateDB(){
+	console.log("populateDB");
+	DB_openDatabase();
+	db.transaction(DB_populate, DB_transaction_error, DB_populate_success);
+	db.transaction(getPrets, DB_transaction_error);
+}
+
+function DB_populate(tx){
+	tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('PC3','Steven','Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('PC2','Steven','Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('PC1','Steven','Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('CD','Steven','Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Cartes','Steven','Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Dés','Steven','Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Cable USB','Steven','Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('BMW','Steven','Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Argent','Steven','Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Livre1','Steven','Wells', date('now'), 1)");
+}
+
+function DB_populate_success(){
+	alert("La base de données a bien été remplie");
+}
+
 // Création des tables de la base de données
 function DB_createTables(tx)
 {
-	console.log("populateDB");
+	console.log("createTables");
 	
 	var sql = 
 		"CREATE TABLE IF NOT EXISTS Pret ( "+
@@ -51,17 +69,6 @@ function DB_createTables(tx)
     tx.executeSql(sql);
     
     console.log("Table PRET created");
-    
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('PC3','Steven','Wells', date('now'), 1)");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('PC2','Steven','Wells', date('now'), 1)");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('PC1','Steven','Wells', date('now'), 1)");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('CD','Steven','Wells', date('now'), 1)");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Cartes','Steven','Wells', date('now'), 1)");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Dés','Steven','Wells', date('now'), 1)");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Cable USB','Steven','Wells', date('now'), 1)");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('BMW','Steven','Wells', date('now'), 1)");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Argent','Steven','Wells', date('now'), 1)");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Livre1','Steven','Wells', date('now'), 1)");
 	
 	tx.executeSql('DROP TABLE IF EXISTS Categorie');
 	var sql = 
@@ -84,7 +91,6 @@ function DB_createTables(tx)
 
 // Succès de la création des tables de la base de données
 function DB_createTables_success() {
-	dbCreated = true;
     db.transaction(getPrets, DB_transaction_error);
 	db.transaction(getCategories, DB_transaction_error);
 }
@@ -92,6 +98,23 @@ function DB_createTables_success() {
 // Erreur de base de données
 function DB_transaction_error(tx, error) {
     alert("Database Error: " + error);
+}
+
+// Lecture des catégories dans la base de données
+function getCategories(tx) {
+	var sql = "SELECT * FROM Categorie";
+	tx.executeSql(sql, [], getCategorie_success);
+}
+
+// Affichage des catégories dans le HTML
+function getCategorie_success(tx, results) {
+    var len = results.rows.length;
+	console.log("exec query getCategorie");
+    for (var i=0; i<len; i++) {
+    	var cat = results.rows.item(i);
+    	$('#listeCategories').append('<option>'+ cat.intitule + '</option>');
+    }
+	db = null;
 }
 
 // Lecture des prêts dans la base de données
@@ -120,28 +143,22 @@ function getPrets_success(tx, results) {
 	db = null;
 }
 
-// Lecture des catégories dans la base de données
-function getCategories(tx) {
-	var sql = "SELECT * FROM Categorie";
-	tx.executeSql(sql, [], getCategorie_success);
+// Création d'un prêt avec les informations du formulaire
+function createPret(form){
+		DB_openDatabase();
+		var nom,prenom,bla = form;
+		db.transaction(function(tx){
+			DB_createPret(tx, nom, prenom, bla);
+		}, DB_transaction_error, DB_createPret_success);
 }
 
-// Affichage des catégories dans le HTML
-function getCategorie_success(tx, results) {
-    var len = results.rows.length;
-	console.log("exec query getCategorie");
-    for (var i=0; i<len; i++) {
-    	var cat = results.rows.item(i);
-    	$('#listeCategories').append('<option>'+ cat.intitule + '</option>');
-    }
-	db = null;
-}
-
-function DB_createPret(tx) {
+// Création d'un pret dans la base de données
+function DB_createPret(tx, nom, prenom, bla) {
 	console.log("exec query createPret");
 	tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('Babouin','Pikachu','Wells')");
 }
 
+// Mise à jours de l'affichage des prêts
 function DB_createPret_success(){
 	$('#listePrets').empty();
 	db.transaction(getPrets, DB_transaction_error);
@@ -185,7 +202,10 @@ $(function(){ // <-- this is a shortcut for $(document).ready(function(){ ... })
     });
 });
 
-function checkCreationPret(){
-		DB_openDatabase();
-		db.transaction(DB_createPret, DB_transaction_error, DB_createPret_success);
-}
+$(function(){ // <-- this is a shortcut for $(document).ready(function(){ ... });
+    $('#home').mouseup(function(){
+		$('#listePrets').listview('refresh');
+    });
+});
+
+
