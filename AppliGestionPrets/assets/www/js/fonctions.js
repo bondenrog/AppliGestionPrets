@@ -5,10 +5,9 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 //Cordova est prêt donc on lance le script
 function onDeviceReady() {
-	console.log("opening database");
-    db = window.openDatabase("DB_Pret", "1.0", "DB_Pret", 200000);
-    console.log("database opened");
-    
+
+	DB_openDatabase();
+
 	// Gestion de la base de données
     if (dbCreated){
     	db.transaction(getPrets, DB_transaction_error);
@@ -17,7 +16,7 @@ function onDeviceReady() {
     else{
     	db.transaction(DB_createTables, DB_transaction_error, DB_createTables_success);
 	}
-
+	
 	// Gestion des contacts du téléphone
 	var options = new ContactFindOptions();
 	options.filter=""; 
@@ -25,6 +24,12 @@ function onDeviceReady() {
 	var fields = ["displayName", "phoneNumbers"];
 	navigator.contacts.find(fields, getContactsSuccess, getContactsError, options);
 		
+}
+
+function DB_openDatabase(){
+	console.log("opening database");
+    db = window.openDatabase("DB_Pret", "1.0", "DB_Pret", 200000);
+    console.log("database opened");
 }
 
 // Récupère tous les contacts du téléphone
@@ -139,19 +144,20 @@ function getCategorie_success(tx, results) {
 	db = null;
 }
 
-function createPret(tx) {
+$(function(){ // <-- this is a shortcut for $(document).ready(function(){ ... });
+    $('#button').click(function(){
+        alert('button clicked');
+		DB_openDatabase();
+		db.transaction(DB_createPret, DB_transaction_error, DB_createPret_success);
+    });
+});
+
+function DB_createPret(tx) {
 	console.log("exec query createPret");
 	tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('Babouin','Pikachu','Wells')");
-	tx.executeSql(sql, [], getPret_success);
+	$('#listePrets').empty();
 }
 
-// Affichage des catégories dans le HTML
-function getPret_success(tx, results) {
-	// actualisation et forcer la reconstruction
-	console.log("MAJ listePret");
-	$("#listePret").selectmenu('refresh', true);
+function DB_createPret_success(){
+	 db.transaction(getPrets, DB_transaction_error);
 }
-
-$('#verify').click(function() {
-    console.log('Button has been clicked');
-});
