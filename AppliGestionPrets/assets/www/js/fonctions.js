@@ -36,40 +36,26 @@ function populateDB(){
 }
 
 function DB_populate(tx){
-	tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('PC3','Steven','Wells', date('now'), 1)");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('PC2','Steven','Wells', date('now'), 1)");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('PC1','Steven','Wells', date('now'), 1)");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('CD','Steven','Wells', date('now'), 1)");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Cartes','Steven','Wells', date('now'), 1)");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Dés','Steven','Wells', date('now'), 1)");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Cable USB','Steven','Wells', date('now'), 1)");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('BMW','Steven','Wells', date('now'), 1)");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Argent','Steven','Wells', date('now'), 1)");
-    tx.executeSql("INSERT INTO Pret (title,firstName,lastName, date, id_categorie) VALUES ('Livre1','Steven','Wells', date('now'), 1)");
+	tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('PC3','Steven Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('PC2','Steven Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('PC1','Steven Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('CD','Steven Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Cartes','Steven Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Dés','Steven Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Cable USB','Steven Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('BMW','Steven Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Argent','Steven Wells', date('now'), 1)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Livre1','Steven Wells', date('now'), 1)");
 }
 
 function DB_populate_success(){
-	alert("La base de données a bien été remplie");
+	alert("INFO : La base de données a été remplie avec succès");
 }
 
 // Création des tables de la base de données
 function DB_createTables(tx)
 {
 	console.log("createTables");
-	
-	var sql = 
-		"CREATE TABLE IF NOT EXISTS Pret ( "+
-		"id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		"title VARCHAR(50), " +
-		"firstName VARCHAR(50), " +
-		"lastName VARCHAR(50), " +
-		"date DATE," +
-		"id_categorie INTEGER, " +	
-		"FOREIGN KEY(id_categorie) REFERENCES Categorie(id)" +
-		")";
-    tx.executeSql(sql);
-    
-    console.log("Table PRET created");
 	
 	tx.executeSql('DROP TABLE IF EXISTS Categorie');
 	var sql = 
@@ -81,6 +67,7 @@ function DB_createTables(tx)
     
     console.log("Table CATEGORIE created");
     
+	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('')");
     tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Livre')");
     tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Musique')");
 	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Film')");
@@ -88,6 +75,19 @@ function DB_createTables(tx)
 	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Informatique')");
 	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Argent')");
 	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Autre')");  
+	
+	var sql = 
+		"CREATE TABLE IF NOT EXISTS Pret ( "+
+		"id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+		"title VARCHAR(50), " +
+		"descName VARCHAR(50), " +
+		"date DATE," +
+		"id_categorie INTEGER, " +	
+		"FOREIGN KEY(id_categorie) REFERENCES Categorie(id)" +
+		")";
+    tx.executeSql(sql);
+    
+    console.log("Table PRET created");
 }
 
 // Succès de la création des tables de la base de données
@@ -113,7 +113,7 @@ function DB_getCategorie_success(tx, results) {
 	console.log("exec query getCategorie");
     for (var i=0; i<len; i++) {
     	var cat = results.rows.item(i);
-    	$('#listeCategories').append('<option value="1">'+ cat.intitule + '</option>');
+    	$('#listeCategories').append('<option value="'+cat.id+'">'+ cat.intitule + '</option>');
     }
 }
 
@@ -133,7 +133,7 @@ function DB_getPrets_success(tx, results) {
     	var pret = results.rows.item(i);
     	$content = $('<li><a href="#detail" data-transition="none"'+'onclick=getPret('+pret.id+')>' +
 					'<h2>' + pret.title + '</h2>' +
-					'<p><strong>' + pret.firstName + ' ' + pret.lastName + '</strong></p>' +
+					'<p><strong>' + pret.descName + '</strong></p>' +
 					'<p class="ui-li-aside">12/02/2012</p>' +
 					'</a></li>');
 		/*$content.find("a").click(function(){
@@ -169,41 +169,48 @@ function DB_getPret_success(tx, results) {
 	'<h2>' + pret.id + ' - ' + pret.title + '</h2>' +
 	'<p><strong>' + pret.firstName + ' ' + pret.lastName + '</strong></p>' +
 	'<p>' + pret.date + '</p>' +
-	'<p>' + pret.id_categorie + '</p>');
-	
+	'<p>' + pret.id_categorie + '</p>');	
 }	
 
+function validateForm(){
+  // si la valeur du champ prenom est non vide
+  if($('#intitule').text() != "" && $('#listeCategories').text() != "" && $('#listeContacts').text() != "") {
+    // les données sont ok, on peut envoyer le formulaire    
+    return true;
+  }
+  else {
+    // sinon on affiche un message
+    alert("Merci de saisir les champs du formulaire !");
+    // et on indique de ne pas envoyer le formulaire
+    return false;
+  }
+}
+
 // Création d'un prêt avec les informations du formulaire
-function createPret(form){
+function createPret(){
 		console.log("exec query createPret FORM");
 		DB_openDatabase();
 		var intitule = $('#intitule').val();
-		alert("val de l'intitule :"+intitule);
-		var categorie = $('#listeCategories option:selected').val();
-		alert("val de la categorie :"+categorie);
-		var duree = $('#duree').text();
-		alert("val de la duree :"+duree);
-		var contact = $('#contact').text();
-		alert("val du contact :"+contact);
-/*
+		var categorie = $('#listeCategories option:selected').val();	
+		var contact = $('#listeContacts option:selected').text();
+
 		db.transaction(function(tx){
-			DB_createPret(tx, nom, prenom, bla);
+			DB_createPret(tx, intitule, contact, categorie);
 		}, DB_transaction_error, DB_createPret_success);
-*/
-	db.transaction(DB_createPret, DB_transaction_error, DB_createPret_success);
 }
 
 // Création d'un pret dans la base de données
-function DB_createPret(tx) { // mettre params
+function DB_createPret(tx, intitule, contact, categorie) { // mettre params
 	console.log("exec query createPret");
-	tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('Babouin','Pikachu','Wells')");
+	var sql = "INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('"+intitule+"','"+contact+"', date('now'), 1)";
+	tx.executeSql(sql);
 }
 
 // Mise à jours de l'affichage des prêts
 function DB_createPret_success(){
 	$('#listePrets').empty();
-	db.transaction(getPrets, DB_transaction_error);
-	alert('Le prêt a été inséré avec succès');	
+	db.transaction(DB_getPrets, DB_transaction_error);
+	alert('INFOS : Le prêt a été inséré avec succès');	
 }
 
 //**********************************//
@@ -222,8 +229,9 @@ function getContacts()
 
 // Insère les contacts du téléphone dans la liste
 function getContactsSuccess(contacts) {
+	$('#listeContacts').append('<option value="'+ 0 +'></option>');
 	for (var i=0; i<contacts.length; i++) {
-		$('#listeContacts').append('<option>' + contacts[i].displayName + '</option>');
+		$('#listeContacts').append('<option value="'+ i+1 +'">' + contacts[i].displayName + '</option>');
 	}
 }
 

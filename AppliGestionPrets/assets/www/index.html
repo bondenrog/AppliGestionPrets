@@ -37,6 +37,13 @@
 							<li><a href="mailto:fabien.ROGER@etu.univ-tours.fr">Fabien ROGER</a></li>
 							<li><a href="mailto:yoann.DENIS@etu.univ-tours.fr">Yoann DENIS</a></li>
 						</ul>
+					<br/>
+				<br/>
+				<ul data-role="listview">
+					<li data-role="list-divider" role="heading">Sources</li>
+					<li><a href="#" onclick="window.open('https://github.com/bondenrog/AppliGestionPrets', '_system');">Lien externe</a></li>
+					<li><input type="text" name="lien" id="lien" readonly="readonly" value="https://github.com/bondenrog/AppliGestionPrets"/></li>				 
+				 </ul>
             </div>
 			
 			<div data-role="footer" data-position="fixed" data-id="footer">
@@ -88,17 +95,10 @@
 			
             <div data-role="content">
 
-<form name="myForm" action="javascript:createPret()" onsubmit="" method="post">
+				<form name="myForm" action="javascript:createPret()" onsubmit="javascript:validerForm()" method="post">
 					<div data-role="fieldcontain">
 						<label for="intitule">Intitulé :</label>
-						<input type="text" name="intitule" id="intitule" value=""  />
-
-
-
-
-
-
-
+						<input type="text" name="intitule" id="intitule" value="" required />
 					</div>
 				
 					<div data-role="fieldcontain">
@@ -107,11 +107,6 @@
 							<!-- Remplissage dynamique -->
 						</select>   
 					</div>
-					
-					<div data-role="fieldcontain">
-						<label for="slider">Durée :</label>
-						<input type="range" name="duree" id="slider" value="30" min="1" max="365" data-highlight="true"  />
-					</div>
 
 					<div data-role="fieldcontain">
 						<label for="listeContacts">Contact</label>
@@ -119,12 +114,10 @@
 							<!-- Remplissage dynamique -->
 						</select>
 					</div>
-
-
 					
 					<fieldset class="ui-grid-a">
 							<div class="ui-block-a"><input type="submit"  data-theme="d" value="Annuler" id="btn_submit" onclick="document.location.href = 'index.html'"/></div>
-							<div class="ui-block-b"><input type="submit"  data-theme="a" value="Valider" id="btn_submit" onclick="createPret()"/></div>
+							<div class="ui-block-b"><input type="submit"  data-theme="a" value="Valider" id="btn_submit" /></div>
 					</fieldset>
 
 				</form>	
