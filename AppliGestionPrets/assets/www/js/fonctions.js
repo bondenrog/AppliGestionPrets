@@ -38,7 +38,6 @@ function DB_createTables(tx)
 {
 	console.log("populateDB");
 	
-	tx.executeSql('DROP TABLE IF EXISTS Pret');
 	var sql = 
 		"CREATE TABLE IF NOT EXISTS Pret ( "+
 		"id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -146,7 +145,6 @@ function DB_createPret(tx) {
 function DB_createPret_success(){
 	$('#listePrets').empty();
 	db.transaction(getPrets, DB_transaction_error);
-	//$('#listePrets').listview('refresh');
 	alert('Le prêt a été inséré avec succès');
 	
 }
@@ -182,10 +180,8 @@ function getContactsError(contactError) {
 //**********************************//
 
 $(function(){ // <-- this is a shortcut for $(document).ready(function(){ ... });
-    $('#consultation').click(function(){
-        alert('button consult clicked');
-		//DB_openDatabase();
-		//db.transaction(DB_createPret, DB_transaction_error, DB_createPret_success);
+    $('#ajout').mouseup(function(){
+		$('#listePrets').listview('refresh');
     });
 });
 
