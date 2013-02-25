@@ -31,7 +31,8 @@ function populateDB(){
 	console.log("populateDB");
 	DB_openDatabase();
 	db.transaction(DB_populate, DB_transaction_error, DB_populate_success);
-	db.transaction(getPrets, DB_transaction_error);
+	db.transaction(DB_getPrets, DB_transaction_error);
+	db = null;
 }
 
 function DB_populate(tx){
@@ -91,8 +92,8 @@ function DB_createTables(tx)
 
 // Succès de la création des tables de la base de données
 function DB_createTables_success() {
-    db.transaction(getPrets, DB_transaction_error);
-	db.transaction(getCategories, DB_transaction_error);
+    db.transaction(DB_getPrets, DB_transaction_error);
+	db.transaction(DB_getCategories, DB_transaction_error);
 }
 
 // Erreur de base de données
@@ -101,47 +102,76 @@ function DB_transaction_error(tx, error) {
 }
 
 // Lecture des catégories dans la base de données
-function getCategories(tx) {
+function DB_getCategories(tx) {
 	var sql = "SELECT * FROM Categorie";
-	tx.executeSql(sql, [], getCategorie_success);
+	tx.executeSql(sql, [], DB_getCategorie_success);
 }
 
 // Affichage des catégories dans le HTML
-function getCategorie_success(tx, results) {
+function DB_getCategorie_success(tx, results) {
     var len = results.rows.length;
 	console.log("exec query getCategorie");
     for (var i=0; i<len; i++) {
     	var cat = results.rows.item(i);
     	$('#listeCategories').append('<option>'+ cat.intitule + '</option>');
     }
-	db = null;
 }
 
 // Lecture des prêts dans la base de données
-function getPrets(tx) {
+function DB_getPrets(tx) {
 	var sql = "SELECT * FROM Pret ";
-	tx.executeSql(sql, [], getPrets_success);
+	tx.executeSql(sql, [], DB_getPrets_success);
 }
 
 // Affichage des prêts dans le HTML
-function getPrets_success(tx, results) {
+function DB_getPrets_success(tx, results) {
     var len = results.rows.length;
+    
 	console.log("exec query getPrets");
+	
     for (var i=0; i<len; i++) {
     	var pret = results.rows.item(i);
-    	$('#listePrets').append('<li><a href="#detail" data-transition="none">' +
-    								'<h2>' + pret.title + '</h2>' +
-    								'<p><strong>' + pret.firstName + ' ' + pret.lastName + '</strong></p>' +
-    								'<p class="ui-li-aside">12/02/2012</p>' +
-    								'</a></li>');
-		/*$('#employeeList').append('<li><a href="employeedetails.html?id=' + employee.id + '">' +
-				'<img src="pics/' + employee.picture + '" class="list-icon"/>' +
-				'<p class="line1">' + employee.firstName + ' ' + employee.lastName + '</p>' +
-				'<p class="line2">' + employee.title + '</p>' +
-				'<span class="bubble">' + employee.reportCount + '</span></a></li>');*/
+    	$content = $('<li><a href="#detail" data-transition="none"'+'onclick=getPret('+pret.id+')>' +
+					'<h2>' + pret.title + '</h2>' +
+					'<p><strong>' + pret.firstName + ' ' + pret.lastName + '</strong></p>' +
+					'<p class="ui-li-aside">12/02/2012</p>' +
+					'</a></li>');
+		/*$content.find("a").click(function(){
+		getPret(pret);
+		});*/
+		$('#listePrets').append($content);
     }
+}
+
+//Lecture d'unpret
+function getPret(id)
+{
+	DB_openDatabase();
+	
+	db.transaction(function(tx){
+		DB_getPret(tx, id);
+	}, DB_transaction_error);
 	db = null;
 }
+
+//Lecture d'un prêt dans la base de données
+function DB_getPret(tx, id) {
+	var sql = "SELECT * FROM Pret WHERE id="+id;
+	tx.executeSql(sql, [], DB_getPret_success);
+}
+
+//Affichage des détails du prêt dans le HTML
+function DB_getPret_success(tx, results) {
+	console.log("exec query getPret");
+	var pret = results.rows.item(0);
+	$('#detailcontent').empty();	
+	$('#detailcontent').append(
+	'<h2>' + pret.id + ' - ' + pret.title + '</h2>' +
+	'<p><strong>' + pret.firstName + ' ' + pret.lastName + '</strong></p>' +
+	'<p>' + pret.date + '</p>' +
+	'<p>' + pret.id_categorie + '</p>');
+	
+}	
 
 // Création d'un prêt avec les informations du formulaire
 function createPret(form){
@@ -162,8 +192,7 @@ function DB_createPret(tx, nom, prenom, bla) {
 function DB_createPret_success(){
 	$('#listePrets').empty();
 	db.transaction(getPrets, DB_transaction_error);
-	alert('Le prêt a été inséré avec succès');
-	
+	alert('Le prêt a été inséré avec succès');	
 }
 
 //**********************************//

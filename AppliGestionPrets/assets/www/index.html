@@ -28,8 +28,15 @@
             </div>
 			
             <div data-role="content">
-                <p>Hello le monde</p>   
-				<input type="submit"  data-theme="a" value="Remplir la base" id="populateDB" onclick="populateDB()"/>
+                <h1>Gestion de pr&ecirc;ts</h1> 
+                  <input type="submit"  data-theme="a" value="Remplir la base" id="populateDB" onclick="populateDB()"/>
+					<br/>
+						<ul data-role="listview">
+							<li data-role="list-divider" role="heading">Contacter les auteurs</li>
+							<li><a href="mailto:anthony.BONNIN@etu.univ-tours.fr">Anthony BONNIN</a></li>
+							<li><a href="mailto:fabien.ROGER@etu.univ-tours.fr">Fabien ROGER</a></li>
+							<li><a href="mailto:yoann.DENIS@etu.univ-tours.fr">Yoann DENIS</a></li>
+						</ul>
             </div>
 			
 			<div data-role="footer" data-position="fixed" data-id="footer">
@@ -80,7 +87,7 @@
             </div>
 			
             <div data-role="content">
-            <form 
+
 				<div data-role="fieldcontain">
 		         	<label for="intitule">Intitulé :</label>
 		         	<input type="text" name="intitule" id="intitule" value=""  />
@@ -129,11 +136,11 @@
 		<div data-role="page" id="detail">
 		
             <div data-role="header">
-                <h1>Detail</h1>
+                <h1>Details du pret</h1>
             </div>
 			
-            <div data-role="content">
-                <p>Détail du pret</p>      
+            <div data-role="content" id="detailcontent">
+     			<!-- Remplissage dynamique -->
             </div>		
         </div>
         <!-- /page --> 
