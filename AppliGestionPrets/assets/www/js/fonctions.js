@@ -113,7 +113,7 @@ function DB_getCategorie_success(tx, results) {
 	console.log("exec query getCategorie");
     for (var i=0; i<len; i++) {
     	var cat = results.rows.item(i);
-    	$('#listeCategories').append('<option>'+ cat.intitule + '</option>');
+    	$('#listeCategories').append('<option value="1">'+ cat.intitule + '</option>');
     }
 }
 
@@ -175,15 +175,26 @@ function DB_getPret_success(tx, results) {
 
 // Création d'un prêt avec les informations du formulaire
 function createPret(form){
+		console.log("exec query createPret FORM");
 		DB_openDatabase();
-		var nom,prenom,bla = form;
+		var intitule = $('#intitule').val();
+		alert("val de l'intitule :"+intitule);
+		var categorie = $('#listeCategories option:selected').val();
+		alert("val de la categorie :"+categorie);
+		var duree = $('#duree').text();
+		alert("val de la duree :"+duree);
+		var contact = $('#contact').text();
+		alert("val du contact :"+contact);
+/*
 		db.transaction(function(tx){
 			DB_createPret(tx, nom, prenom, bla);
 		}, DB_transaction_error, DB_createPret_success);
+*/
+	db.transaction(DB_createPret, DB_transaction_error, DB_createPret_success);
 }
 
 // Création d'un pret dans la base de données
-function DB_createPret(tx, nom, prenom, bla) {
+function DB_createPret(tx) { // mettre params
 	console.log("exec query createPret");
 	tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('Babouin','Pikachu','Wells')");
 }

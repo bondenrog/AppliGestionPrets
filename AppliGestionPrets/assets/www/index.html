@@ -88,35 +88,46 @@
 			
             <div data-role="content">
 
-				<div data-role="fieldcontain">
-		         	<label for="intitule">Intitulé :</label>
-		         	<input type="text" name="intitule" id="intitule" value=""  />
-				</div>
-            
-                <div data-role="fieldcontain">
-	                <label for="listeCategories">Catégorie</label>
-					<select name="select-choice-0" id="listeCategories">
-						<!-- Remplissage dynamique -->
-					</select>   
-				</div>
-				
-				<div data-role="fieldcontain">
-					<label for="slider">Durée :</label>
-					<input type="range" name="slider" id="slider" value="30" min="1" max="365" data-highlight="true"  />
-				</div>
+<form name="myForm" action="javascript:createPret()" onsubmit="" method="post">
+					<div data-role="fieldcontain">
+						<label for="intitule">Intitulé :</label>
+						<input type="text" name="intitule" id="intitule" value=""  />
 
-				<div data-role="fieldcontain">
-	                <label for="listeContacts">Contact</label>
-					<select name="listeContacts" id="listeContacts">
-						<!-- Remplissage dynamique -->
-					</select>
-				</div>
+
+
+
+
+
+
+					</div>
 				
-				
-				<fieldset class="ui-grid-a">
-						<div class="ui-block-a"><input type="submit"  data-theme="d" value="Annuler" id="btn_submit" onclick="document.location.href = 'index.html'"/></div>
-						<div class="ui-block-b"><input type="submit"  data-theme="a" value="Valider" id="btn_submit" onclick="createPret()"/></div>
-				</fieldset>
+					<div data-role="fieldcontain">
+						<label for="listeCategories">Catégorie</label>
+						<select name="categorie" id="listeCategories">
+							<!-- Remplissage dynamique -->
+						</select>   
+					</div>
+					
+					<div data-role="fieldcontain">
+						<label for="slider">Durée :</label>
+						<input type="range" name="duree" id="slider" value="30" min="1" max="365" data-highlight="true"  />
+					</div>
+
+					<div data-role="fieldcontain">
+						<label for="listeContacts">Contact</label>
+						<select name="contact" id="listeContacts">
+							<!-- Remplissage dynamique -->
+						</select>
+					</div>
+
+
+					
+					<fieldset class="ui-grid-a">
+							<div class="ui-block-a"><input type="submit"  data-theme="d" value="Annuler" id="btn_submit" onclick="document.location.href = 'index.html'"/></div>
+							<div class="ui-block-b"><input type="submit"  data-theme="a" value="Valider" id="btn_submit" onclick="createPret()"/></div>
+					</fieldset>
+
+				</form>	
 				
 			</div>
 			
