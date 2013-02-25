@@ -17,31 +17,20 @@ function onDeviceReady() {
     	db.transaction(DB_createTables, DB_transaction_error, DB_createTables_success);
 	}
 	
-	// Gestion des contacts du téléphone
-	var options = new ContactFindOptions();
-	options.filter=""; 
-	options.multiple=true; 
-	var fields = ["displayName", "phoneNumbers"];
-	navigator.contacts.find(fields, getContactsSuccess, getContactsError, options);
-		
+	// Récupération des contacts du téléphone
+    getContacts();		
 }
 
+
+//**********************************//
+// Gestion Base de données
+//**********************************//
+
+// Ouverture de la bdd
 function DB_openDatabase(){
 	console.log("opening database");
     db = window.openDatabase("DB_Pret", "1.0", "DB_Pret", 200000);
     console.log("database opened");
-}
-
-// Récupère tous les contacts du téléphone
-function getContactsSuccess(contacts) {
-	for (var i=0; i<contacts.length; i++) {
-		$('#listeContacts').append('<option>'+ contacts[i].displayName + ' Tèl:'+ contacts[i].phoneNumbers[0].value+'</option>');
-	}
-}
-
-// Erreur lors de la récupération des contacts du téléphone
-function getContactsError(contactError) {
-	alert('Error during loading phone contacts');
 }
 
 // Création des tables de la base de données
@@ -56,11 +45,14 @@ function DB_createTables(tx)
 		"title VARCHAR(50), " +
 		"firstName VARCHAR(50), " +
 		"lastName VARCHAR(50), " +
+		"date DATE," +
 		"id_categorie INTEGER, " +	
 		"FOREIGN KEY(id_categorie) REFERENCES Categorie(id)" +
 		")";
     tx.executeSql(sql);
+    
     console.log("Table PRET created");
+    
     tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('PC3','Steven','Wells')");
     tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('PC2','Steven','Wells')");
     tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('PC1','Steven','Wells')");
@@ -79,7 +71,9 @@ function DB_createTables(tx)
 		"intitule VARCHAR(50) " +		
 		")";
     tx.executeSql(sql);
+    
     console.log("Table CATEGORIE created");
+    
     tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Livre')");
     tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Musique')");
 	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Film')");
@@ -144,19 +138,6 @@ function getCategorie_success(tx, results) {
 	db = null;
 }
 
-$(function(){ // <-- this is a shortcut for $(document).ready(function(){ ... });
-    $('#consultation').click(function(){
-        alert('button consult clicked');
-		//DB_openDatabase();
-		//db.transaction(DB_createPret, DB_transaction_error, DB_createPret_success);
-    });
-});
-
-function checkCreationPret(){
-		DB_openDatabase();
-		db.transaction(DB_createPret, DB_transaction_error, DB_createPret_success);
-}
-
 function DB_createPret(tx) {
 	console.log("exec query createPret");
 	tx.executeSql("INSERT INTO Pret (title,firstName,lastName) VALUES ('Babouin','Pikachu','Wells')");
@@ -168,4 +149,47 @@ function DB_createPret_success(){
 	//$('#listePrets').listview('refresh');
 	alert('Le prêt a été inséré avec succès');
 	
+}
+
+//**********************************//
+//	Gestion Contacts
+//**********************************//
+
+//Récupère les contacts du téléphone
+function getContacts()
+{
+	var options = new ContactFindOptions();
+	options.filter=""; 
+	options.multiple=true; 
+	var fields = ["displayName", "phoneNumbers"];
+	navigator.contacts.find(fields, getContactsSuccess, getContactsError, options);
+}
+
+// Insère les contacts du téléphone dans la liste
+function getContactsSuccess(contacts) {
+	for (var i=0; i<contacts.length; i++) {
+		$('#listeContacts').append('<option>' + contacts[i].displayName + '</option>');
+	}
+}
+
+// Erreur lors de la récupération des contacts du téléphone
+function getContactsError(contactError) {
+	alert('Error during loading phone contacts');
+}
+
+//**********************************//
+// Divers
+//**********************************//
+
+$(function(){ // <-- this is a shortcut for $(document).ready(function(){ ... });
+    $('#consultation').click(function(){
+        alert('button consult clicked');
+		//DB_openDatabase();
+		//db.transaction(DB_createPret, DB_transaction_error, DB_createPret_success);
+    });
+});
+
+function checkCreationPret(){
+		DB_openDatabase();
+		db.transaction(DB_createPret, DB_transaction_error, DB_createPret_success);
 }
