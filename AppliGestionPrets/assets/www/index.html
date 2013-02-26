@@ -95,7 +95,7 @@
 			
             <div data-role="content">
 
-				<form name="myForm" action="javascript:createPret()" onsubmit="javascript:return validateForm()" method="post">
+				<form name="myForm" id="formAdd" action="javascript:createPret()" onsubmit="javascript:return validateForm()" method="post">
 					<div data-role="fieldcontain">
 						<label for="intitule">Intitulé :</label>
 						<input type="text" name="intitule" id="intitule" value="" required />
@@ -107,18 +107,15 @@
 							<!-- Remplissage dynamique -->
 						</select>   
 					</div>
-
+					
 					<div data-role="fieldcontain">
-						<label for="listeContacts">Contact :</label>
+						<label for="listeContacts" class="select">Contacts :</label>
 						<select name="contact" id="listeContacts">
 							<!-- Remplissage dynamique -->
 						</select>
-					</div>
-					
-					<fieldset class="ui-grid-a">
-							<div class="ui-block-a"><input type="submit"  data-theme="d" value="Annuler" id="btn_submit" /></div>
-							<div class="ui-block-b"><input type="submit"  data-theme="a" value="Valider" id="btn_submit" /></div>
-					</fieldset>
+					</div>	
+					<br/>		
+					<input type="submit"  data-theme="a" value="Valider" id="btn_submit" /></div>
 
 				</form>	
 				
