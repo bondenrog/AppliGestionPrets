@@ -110,7 +110,7 @@ function DB_getCategorie_success(tx, results) {
     var len = results.rows.length;
 	console.log("exec query getCategorie");
 	$('#listeCategories').empty();
-	$('#listeCategories').append('<option value="'+ 0 +'></option>'); //ligne vide pour la liste catégorie page ajout
+	$('#listeCategories').append('<option value="'+ 0 +'"></option>'); //ligne vide pour la liste catégorie page ajout
     for (var i=0; i<len; i++) {
     	var cat = results.rows.item(i);
     	$('#listeCategories').append('<option value="'+cat.id+'">'+ cat.intitule + '</option>'); //liste catégorie page ajout
@@ -197,15 +197,20 @@ function DB_getPret_success(tx, results) {
 
 function validateForm(){
   // si la valeur du champ prenom est non vide
-  if($('#intitule').text() != "" && $('#listeCategories').text() != "" && $('#listeContacts').text() != "") {
-    // les données sont ok, on peut envoyer le formulaire    
-    return true;
+  if($('#intitule').val() == "" ){
+	  alert("Merci de saisir un intitulé !");
+	  return false;
+  }
+  else if($('#listeCategories').val() == "0"){
+	  alert("Merci de sélectionner une catégorie !");
+	  return false;
+  }
+ else if($('#listeContacts').val() == "0"){
+	 alert("Merci de sélectionner un contact !");
+	 return false;
   }
   else {
-    // sinon on affiche un message
-    alert("Merci de saisir les champs du formulaire !");
-    // et on indique de ne pas envoyer le formulaire
-    return false;
+    return true;
   }
 }
 
@@ -253,7 +258,7 @@ function getContacts()
 
 // Insère les contacts du téléphone dans la liste
 function getContactsSuccess(contacts) {
-	$('#listeContacts').append('<option value="'+ 0 +'></option>');
+	$('#listeContacts').append('<option value="'+ 0 +'"></option>');
 	for (var i=0; i<contacts.length; i++) {
 		$('#listeContacts').append('<option value="'+ i+1 +'">' + contacts[i].displayName + '</option>');
 	}
