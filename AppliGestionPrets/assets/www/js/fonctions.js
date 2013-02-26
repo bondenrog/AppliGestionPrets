@@ -22,7 +22,7 @@ function onDeviceReady() {
 // Ouverture de la bdd
 function DB_openDatabase(){
 	console.log("opening database");
-    db = window.openDatabase("DB_Pret", "1.0", "DB_Pret", 200000);
+    db = window.openDatabase("DB_Pret_BONDENROG", "1.0", "DB_Pret_BONDENROG", 200000);
     console.log("database opened");
 }
 
@@ -36,15 +36,15 @@ function populateDB(){
 }
 
 function DB_populate(tx){
-	tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('MacBook','Francky Vincent', date('now'), 5)");
-    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('PC Vaio','Sarah Croche', date('now'), 5)");
-    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('ZZ Top','Steven Wells', date('now'), 2)");
-    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Cartes','Adam Smith', date('now'), 4)");
-    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Monopoly','Jean Michel', date('now'), 4)");
-    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Cable USB','Christine Wells', date('now'), 5)");
-    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Audi TT','Bobby Belair', date('now'), 7)");
-    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('50€','Brandon Mills', date('now'), 6)");
-    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Harry Potter','Harry Rose', date('now'), 1)");
+	tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('MacBook','Francky Vincent', date('now', 'start of month'), 5)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('PC Vaio','Sarah Croche', date('now','-1 day'), 5)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('ZZ Top','Steven Wells', date('now', '-2 days'), 2)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Cartes','Adam Smith', date('now', '-24 days'), 4)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Monopoly','Jean Michel', date('now', '-58 days'), 4)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Cable USB','Christine Wells', date('now', '-24 days'), 5)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Audi TT','Bobby Belair', date('now', '-74 days'), 7)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('50€','Brandon Mills', date('now', '-22 days'), 6)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Harry Potter','Harry Rose', date('now', '-8 days'), 1)");
 }
 
 function DB_populate_success(){
@@ -109,7 +109,8 @@ function DB_getCategories(tx) {
 function DB_getCategorie_success(tx, results) {
     var len = results.rows.length;
 	console.log("exec query getCategorie");
-	$('#listeCategories').append('<option value="'+0+'"></option>'); //ligne vide pour la liste catégorie page ajout
+	$('#listeCategories').empty();
+	$('#listeCategories').append('<option value="'+ 0 +'></option>'); //ligne vide pour la liste catégorie page ajout
     for (var i=0; i<len; i++) {
     	var cat = results.rows.item(i);
     	$('#listeCategories').append('<option value="'+cat.id+'">'+ cat.intitule + '</option>'); //liste catégorie page ajout
@@ -149,7 +150,7 @@ function DB_getPrets_success(tx, results) {
         var WNbJours = jsDateNow.getTime() - sqlDate.getTime();
         var duree = Math.ceil(WNbJours/(1000*60*60*24));
         
-    	/*console.log(pret.date + " - " + sqlDate + " - " + sqlDate.toLocaleDateString() + " - " + jsDateNow );*/
+    	console.log(pret.date + " - " + sqlDate + " - " + sqlDate.toLocaleDateString() + " - " + jsDateNow );
     	
     	$content = $('<li><a href="#detail" data-transition="none"'+'onclick=getPret('+pret.id+')>' +
 					'<h2>' + pret.title + '</h2>' +
@@ -224,13 +225,14 @@ function createPret(){
 // Création d'un pret dans la base de données
 function DB_createPret(tx, intitule, contact, categorie) { // mettre params
 	console.log("exec query createPret");
-	var sql = "INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('"+intitule+"','"+contact+"', date('now'), '"+categorie+"')";
+	var sql = "INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('"+intitule+"','"+contact+"', date('now'),'"+categorie+"')";
 	tx.executeSql(sql);
 }
 
 // Mise à jours de l'affichage des prêts
 function DB_createPret_success(){
 	$('#listePrets').empty();
+	db.transaction(DB_getCategories, DB_transaction_error);
 	db.transaction(DB_getPrets, DB_transaction_error);
 	alert('INFOS : Le prêt a été inséré avec succès');	
 }
