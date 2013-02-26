@@ -229,6 +229,8 @@ function createPret(){
 		}, DB_transaction_error, DB_createPret_success);
 		
 		clearForm();
+		
+		//$.mobile.changePage('index.html#consultation', { transition: "none", reloadPage: true});		
 }
 
 // Création d'un pret dans la base de données
