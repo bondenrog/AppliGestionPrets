@@ -28,7 +28,7 @@
             </div>
 			
             <div data-role="content">
-                <h1>Gestion de prêts</h1> 
+                <h1 class="centre">Gestion de prêts</h1> 
                   <input type="submit"  data-theme="a" value="Remplir la base" onclick="populateDB()"/>
 					<br/>
 						<ul data-role="listview">
@@ -137,11 +137,15 @@
 		<div data-role="page" id="detail">
 		
             <div data-role="header">
-                <h1>Details du pret</h1>
+                <h1>Détails du prêt</h1>
             </div>
 			
-            <div data-role="content" id="detailcontent">
-     			<!-- Remplissage dynamique -->
+            <div data-role="content" class="centre">
+     			<!-- Remplissage dynamique --> 
+				<h2 id="Dtitle"></h2>
+				<p><strong id="DdescName"></strong></p>
+				<p id="Ddate"></p>
+				<input id="Dbutton" type="submit" value="Supprimer" data-theme="e"/>	  
             </div>		
         </div>
         <!-- /page --> 

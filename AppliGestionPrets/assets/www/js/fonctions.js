@@ -4,6 +4,16 @@ document.addEventListener("deviceready", onDeviceReady, false);
 //Cordova est prêt donc on lance le script
 function onDeviceReady() {
 
+	document.addEventListener("backbutton", function(e){
+		if( ($.mobile.activePage.is('#home')) || ($.mobile.activePage.is('#consultation')) ){
+		    e.preventDefault();
+		    navigator.app.exitApp();
+		}
+		else {
+		    navigator.app.backHistory()
+		}
+		}, false);
+	
 	DB_openDatabase();
 
 	// Création de la base de données et création des différents éléments HTML
@@ -108,7 +118,9 @@ function DB_getCategories(tx) {
 function DB_getCategorie_success(tx, results) {
     var len = results.rows.length;
 	console.log("exec query getCategorie");
+	
 	$('#listeCategories').empty();
+	$('#listePrets').empty();
 	
 	$('#listeCategories').append('<option value="0"></option>'); //ligne vide pour la liste catégorie page ajout
     for (var i=0; i<len; i++) {
@@ -116,6 +128,15 @@ function DB_getCategorie_success(tx, results) {
     	$('#listeCategories').append('<option value="'+cat.id+'">'+ cat.intitule + '</option>'); //liste catégorie page ajout
 		$('#listePrets').append('<li data-role="list-divider" id="'+cat.id+'">'+cat.intitule+'</li>'); //liste prets page consultation
     }
+    // on essaye un refresh car bcp de pb
+	try
+	{
+		$('#listePrets').listview('refresh');
+	}
+	catch(err)
+	{
+		console.log(err.message);
+	}
 }
 
 // Lecture des prêts dans la base de données
@@ -128,9 +149,9 @@ function DB_getPrets(tx) {
 function DB_getPrets_success(tx, results) {
     var len = results.rows.length;
     
-	console.log("exec query getPrets");
+    console.log("exec query getPrets");
 	
-   for (var i=0; i<len; i++) {
+    for (var i=0; i<len; i++) {
 		//recuperation du pret courant
     	var pret = results.rows.item(i);
     	
@@ -152,19 +173,28 @@ function DB_getPrets_success(tx, results) {
         
     	console.log(pret.date + " - " + sqlDate + " - " + sqlDate.toLocaleDateString() + " - " + jsDateNow );
     	
-    	$content = $('<li><a href="#detail" data-transition="none"'+'onclick=getPret('+pret.id+')>' +
+    	$content = $('<li><a href="#detail" data-transition="none" onclick=getPret('+pret.id+')>' +
 					'<h2>' + pret.title + '</h2>' +
 					'<p><strong>' + pret.descName + '</strong></p>' +
 					/*'<p class="ui-li-aside">12/02/2012</p>' + */
 					'<span class="ui-li-count"> En prêt depuis le ' + YMD[2] + '/' + YMD[1] + '/' + YMD[0] + ' (' + duree +' jours)</span>' +
 					'</a></li>');
-		/*$content.find("a").click(function(){
+		
+    	/*$content.find("a").click(function(){
 		getPret(pret);
-		});*/
+		});*/	
+    	
 		$('#' + pret.id_categorie).after($content);
-		$('#listePrets').listview('refresh');
-
     }
+    // on essaye un refresh car bcp de pb
+	try
+	{
+		$('#listePrets').listview('refresh');
+	}
+	catch(err)
+	{
+		console.log(err.message);
+	}
 }
 
 //Lecture d'un pret
@@ -185,20 +215,22 @@ function DB_getPret(tx, id) {
 }
 
 //Affichage des détails du prêt dans le HTML
-function DB_getPret_success(tx, results) {
+function DB_getPret_success(tx, results) {	
 	console.log("exec query getPret");
-	var pret = results.rows.item(0);
-	$('#detailcontent').empty();	
-	$('#detailcontent').append(
+	var pret = results.rows.item(0);	
+	/*$('#detailcontent').append(
 	'<h2>' + pret.title + '</h2>' +
 	'<p><strong>' + pret.descName + '</strong></p>' +
 	'<p>' + pret.date + '</p>' +
-	'<p>' + pret.id_categorie + '</p>' +
-	'<input type="submit" value="Supprimer" data-theme="a" onclick="deletePret('+pret.id+')"/>' +
-	'<input type="submit" value="Supprimer" data-theme="b" onclick="deletePret('+pret.id+')"/>' +
-	'<input type="submit" value="Supprimer" data-theme="c" onclick="deletePret('+pret.id+')"/>' +
-	'<input type="submit" value="Supprimer" data-theme="d" onclick="deletePret('+pret.id+')"/>' +
-	'<input type="submit" value="Supprimer" data-theme="e" onclick="deletePret('+pret.id+')"/>');
+	'<input type="submit" value="Supprimer" data-theme="e" onclick="deletePret('+pret.id+')"/>');*/	
+	$('#Dtitle').empty();
+	$('#Dtitle').append(pret.title);
+	$('#DdescName').empty();
+	$('#DdescName').replaceWith(pret.descName);
+	$('#Ddate').empty();
+	$('#Ddate').replaceWith(pret.date);
+	$('#Dbutton').click(function(){deletePret(pret.id);});
+	//$.mobile.changePage('index.html#detail', {transition: "none"});
 }	
 
 function validateForm(){
@@ -233,10 +265,7 @@ function createPret(){
 			DB_createPret(tx, intitule, contact, categorie);
 		}, DB_transaction_error, DB_createPret_success);
 		
-		
-		clearForm();
-		
-		//$.mobile.changePage('index.html#consultation', { transition: "none", reloadPage: true});		
+		clearForm();		
 }
 
 // Création d'un pret dans la base de données
@@ -249,7 +278,8 @@ function DB_createPret(tx, intitule, contact, categorie) { // mettre params
 // Mise à jour de l'affichage des prêts
 function DB_createPret_success(){
 	updateListview();
-	alert('INFO : Le prêt a été inséré avec succès');	
+	alert('INFO : Le prêt a été inséré avec succès');
+	$.mobile.changePage('index.html#consultation', { transition: "none"});
 }
 
 //Effacer un prêt
@@ -272,7 +302,8 @@ function DB_deletePret(tx, id) {
 //Actions après suppression d'un prêt
 function DB_deletePret_success(tx, results) {
 	updateListview();
-	window.location = 'index.html#consultation';
+	//window.location = 'index.html#consultation';
+	$.mobile.changePage('index.html#consultation', { transition: "none"});
 }	
 
 //**********************************//
@@ -322,4 +353,3 @@ function updateListview(){
 	db.transaction(DB_getCategories, DB_transaction_error);
 	db.transaction(DB_getPrets, DB_transaction_error);
 }
-
