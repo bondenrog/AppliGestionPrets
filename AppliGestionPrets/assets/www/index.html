@@ -28,8 +28,8 @@
             </div>
 			
             <div data-role="content">
-                <h1>Gestion de pr&ecirc;ts</h1> 
-                  <input type="submit"  data-theme="a" value="Remplir la base" id="populateDB" onclick="populateDB()"/>
+                <h1>Gestion de prêts</h1> 
+                  <input type="submit"  data-theme="a" value="Remplir la base" onclick="populateDB()"/>
 					<br/>
 						<ul data-role="listview">
 							<li data-role="list-divider" role="heading">Contacter les auteurs</li>
@@ -95,7 +95,7 @@
 			
             <div data-role="content">
 
-				<form name="myForm" id="formAdd" action="javascript:createPret()" onsubmit="javascript:return validateForm()" method="post">
+				<form action="javascript:createPret()" onsubmit="javascript:return validateForm()">
 					<div data-role="fieldcontain">
 						<label for="intitule">Intitulé :</label>
 						<input type="text" name="intitule" id="intitule" value="" required />
@@ -115,7 +115,7 @@
 						</select>
 					</div>	
 					
-					<input type="submit"  data-theme="a" value="Valider" id="btn_submit" />
+					<input type="submit"  data-theme="a" value="Valider"/>
 
 				</form>	
 				

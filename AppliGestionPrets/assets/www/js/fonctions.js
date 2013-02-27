@@ -31,7 +31,7 @@ function populateDB(){
 	console.log("populateDB");
 	DB_openDatabase();
 	db.transaction(DB_populate, DB_transaction_error, DB_populate_success);
-	db.transaction(DB_getPrets, DB_transaction_error);
+	updateListview();
 	db = null;
 }
 
@@ -90,8 +90,7 @@ function DB_createTables(tx)
 
 // Succès de la création des tables de la base de données
 function DB_createTables_success() {
-	db.transaction(DB_getCategories, DB_transaction_error);
-	db.transaction(DB_getPrets, DB_transaction_error);
+	updateListview();
 }
 
 // Erreur de base de données
@@ -163,6 +162,7 @@ function DB_getPrets_success(tx, results) {
 		getPret(pret);
 		});*/
 		$('#' + pret.id_categorie).after($content);
+		$('#listePrets').listview('refresh');
 
     }
 }
@@ -175,7 +175,7 @@ function getPret(id)
 	db.transaction(function(tx){
 		DB_getPret(tx, id);
 	}, DB_transaction_error);
-	db = null;
+	
 }
 
 //Lecture d'un prêt dans la base de données
@@ -190,10 +190,15 @@ function DB_getPret_success(tx, results) {
 	var pret = results.rows.item(0);
 	$('#detailcontent').empty();	
 	$('#detailcontent').append(
-	'<h2>' + pret.id + ' - ' + pret.title + '</h2>' +
+	'<h2>' + pret.title + '</h2>' +
 	'<p><strong>' + pret.descName + '</strong></p>' +
 	'<p>' + pret.date + '</p>' +
-	'<p>' + pret.id_categorie + '</p>');	
+	'<p>' + pret.id_categorie + '</p>' +
+	'<input type="submit" value="Supprimer" data-theme="a" onclick="deletePret('+pret.id+')"/>' +
+	'<input type="submit" value="Supprimer" data-theme="b" onclick="deletePret('+pret.id+')"/>' +
+	'<input type="submit" value="Supprimer" data-theme="c" onclick="deletePret('+pret.id+')"/>' +
+	'<input type="submit" value="Supprimer" data-theme="d" onclick="deletePret('+pret.id+')"/>' +
+	'<input type="submit" value="Supprimer" data-theme="e" onclick="deletePret('+pret.id+')"/>');
 }	
 
 function validateForm(){
@@ -228,6 +233,7 @@ function createPret(){
 			DB_createPret(tx, intitule, contact, categorie);
 		}, DB_transaction_error, DB_createPret_success);
 		
+		
 		clearForm();
 		
 		//$.mobile.changePage('index.html#consultation', { transition: "none", reloadPage: true});		
@@ -240,13 +246,34 @@ function DB_createPret(tx, intitule, contact, categorie) { // mettre params
 	tx.executeSql(sql);
 }
 
-// Mise à jours de l'affichage des prêts
+// Mise à jour de l'affichage des prêts
 function DB_createPret_success(){
-	$('#listePrets').empty();
-	db.transaction(DB_getCategories, DB_transaction_error);
-	db.transaction(DB_getPrets, DB_transaction_error);
-	alert('INFOS : Le prêt a été inséré avec succès');	
+	updateListview();
+	alert('INFO : Le prêt a été inséré avec succès');	
 }
+
+//Effacer un prêt
+function deletePret(id)
+{
+	DB_openDatabase();
+	
+	db.transaction(function(tx){
+		DB_deletePret(tx, id);
+	}, DB_transaction_error, DB_deletePret_success);
+
+}
+
+//Effacer un prêt dans la base de données
+function DB_deletePret(tx, id) {
+	var sql = "DELETE FROM Pret WHERE id="+id;
+	tx.executeSql(sql);
+}
+
+//Actions après suppression d'un prêt
+function DB_deletePret_success(tx, results) {
+	updateListview();
+	window.location = 'index.html#consultation';
+}	
 
 //**********************************//
 //	Gestion Contacts
@@ -280,20 +307,7 @@ function getContactsError(contactError) {
 // Divers
 //**********************************//
 
-$(function(){ // <-- this is a shortcut for $(document).ready(function(){ ... });
-    $('#ajout').mouseup(function(){
-		$('#listePrets').listview('refresh');	
-    });
-});
-
-$(function(){ // <-- this is a shortcut for $(document).ready(function(){ ... });
-    $('#home').mouseup(function(){
-		$('#listePrets').listview('refresh');
-    });
-});
-
-
-function clearForm () {
+function clearForm() {
 	$('#intitule').val("");
 	
 	$("#listeCategories").get(0).selectedIndex = 0;
@@ -303,4 +317,9 @@ function clearForm () {
 	$('#listeContacts').selectmenu('refresh');
 }
 
+function updateListview(){
+	$('#listePrets').empty();
+	db.transaction(DB_getCategories, DB_transaction_error);
+	db.transaction(DB_getPrets, DB_transaction_error);
+}
 
