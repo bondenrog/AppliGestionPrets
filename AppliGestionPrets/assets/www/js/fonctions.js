@@ -141,7 +141,7 @@ function DB_getCategorie_success(tx, results) {
 
 // Lecture des prêts dans la base de données
 function DB_getPrets(tx) {
-	var sql = "SELECT * FROM Pret ";
+	var sql = "SELECT * FROM Pret ORDER BY date DESC";
 	tx.executeSql(sql, [], DB_getPrets_success);
 }
 
@@ -227,7 +227,10 @@ function DB_getPret_success(tx, results) {
 	$('#Ddate').empty();
 	$('#Ddate').append('Jour du prêt : '+ YMD[2] + '/' + YMD[1] + '/' + YMD[0]);
 	$('#Dbutton').click(function(){deletePret(pret.id);});
-	//$.mobile.changePage('index.html#detail', {transition: "none"});
+	getContact(pret.descName);
+	//$('[type="submit"]').button('refresh');
+	$('#btnTel').button("refresh");
+
 }	
 
 function validateForm(){
@@ -260,9 +263,7 @@ function createPret(){
 
 		db.transaction(function(tx){
 			DB_createPret(tx, intitule, contact, categorie);
-		}, DB_transaction_error, DB_createPret_success);
-		
-		clearForm();		
+		}, DB_transaction_error, DB_createPret_success);		
 }
 
 // Création d'un pret dans la base de données
@@ -276,6 +277,7 @@ function DB_createPret(tx, intitule, contact, categorie) { // mettre params
 function DB_createPret_success(){
 	updateListview();
 	alert('INFO : Le prêt a été inséré avec succès');
+	clearForm();
 	$.mobile.changePage('index.html#consultation', { transition: "none"});
 }
 
@@ -329,6 +331,33 @@ function getContactsSuccess(contacts) {
 // Erreur lors de la récupération des contacts du téléphone
 function getContactsError(contactError) {
 	alert('Error during loading phone contacts');
+}
+
+function getContact(name)
+{
+	var options = new ContactFindOptions();
+	options.filter=name; 
+	options.multiple=false; 
+	var fields = ["displayName", "phoneNumbers"];
+	navigator.contacts.find(fields, getContactSuccess, getContactError, options);
+}
+
+// Récupère les numéros de téléphone du contact
+function getContactSuccess(contacts) {
+	var numero = '';
+	for (var i=0; i<contacts.length; i++) {
+        for (var j=0; j<contacts[i].phoneNumbers.length; j++) {
+           numero += '<p>'+contacts[i].phoneNumbers[j].type +' : <a href="tel:'+contacts[i].phoneNumbers[j].value+'" data-role="button">'+contacts[i].phoneNumbers[j].value+'</a></p>';
+        }     
+    }
+	
+	$('#DnumName').empty();
+	$('#DnumName').append(numero);
+}
+
+// Erreur lors de la récupération des contacts du téléphone
+function getContactError(contactError) {
+	alert('Error during loading phone contact');
 }
 
 //**********************************//
