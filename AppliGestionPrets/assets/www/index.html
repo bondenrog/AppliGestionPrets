@@ -28,22 +28,24 @@
             </div>
 			
             <div data-role="content">
-                <h1 class="centre">Gestion de prêts</h1> 
-                  <input type="submit"  data-theme="a" value="Remplir la base" onclick="populateDB()"/>
-					<br/>
-						<ul data-role="listview">
-							<li data-role="list-divider" role="heading">Contacter les auteurs</li>
-							<li><a href="mailto:anthony.BONNIN@etu.univ-tours.fr">Anthony BONNIN</a></li>
-							<li><a href="mailto:fabien.ROGER@etu.univ-tours.fr">Fabien ROGER</a></li>
-							<li><a href="mailto:yoann.DENIS@etu.univ-tours.fr">Yoann DENIS</a></li>
-						</ul>
-					<br/>
+                <h1 class="centre">Gestion de prêts</h1>
+                <div class="centre"> 
+                	<a data-role="button" data-icon="plus" data-theme="e" data-inline="true" onclick="populateDB()">Remplir la base</a>
+            	</div>
+				<br/>
+					<ul data-role="listview">
+						<li data-role="list-divider" role="heading">Contacter les auteurs</li>
+						<li><a href="mailto:anthony.BONNIN@etu.univ-tours.fr">Anthony BONNIN</a></li>
+						<li><a href="mailto:fabien.ROGER@etu.univ-tours.fr">Fabien ROGER</a></li>
+						<li><a href="mailto:yoann.DENIS@etu.univ-tours.fr">Yoann DENIS</a></li>
+					</ul>
+				<br/>
 				<br/>
 				<ul data-role="listview">
 					<li data-role="list-divider" role="heading">Sources</li>
 					<li><a href="#" onclick="window.open('https://github.com/bondenrog/AppliGestionPrets', '_system');">Lien externe</a></li>
 					<li><input type="text" name="lien" id="lien" readonly="readonly" value="https://github.com/bondenrog/AppliGestionPrets"/></li>				 
-				 </ul>
+				</ul>
             </div>
 			
 			<div data-role="footer" data-position="fixed" data-id="footer">
@@ -145,8 +147,10 @@
 				<h2 id="Dtitle"></h2>
 				<p><strong id="DdescName"></strong></p>
 				<p id="Ddate"></p>
-				<input id="Dbutton" type="submit" value="Supprimer" data-theme="e"/>	  
-            </div>		
+				<br/>
+				<br/>
+				<a id="Dbutton" data-role="button" data-icon="delete" data-theme="e" data-inline="true">Supprimer</a>	  
+          	</div>
         </div>
         <!-- /page --> 
         	

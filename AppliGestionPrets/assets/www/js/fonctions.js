@@ -150,7 +150,7 @@ function DB_getPrets_success(tx, results) {
     var len = results.rows.length;
     
     console.log("exec query getPrets");
-	
+    
     for (var i=0; i<len; i++) {
 		//recuperation du pret courant
     	var pret = results.rows.item(i);
@@ -173,11 +173,11 @@ function DB_getPrets_success(tx, results) {
         
     	console.log(pret.date + " - " + sqlDate + " - " + sqlDate.toLocaleDateString() + " - " + jsDateNow );
     	
-    	$content = $('<li><a href="#detail" data-transition="none" onclick=getPret('+pret.id+')>' +
+    	$content = $('<li><a href="#detail" data-transition="none" onclick="getPret('+pret.id+')">' +
 					'<h2>' + pret.title + '</h2>' +
 					'<p><strong>' + pret.descName + '</strong></p>' +
-					/*'<p class="ui-li-aside">12/02/2012</p>' + */
-					'<span class="ui-li-count"> En prêt depuis le ' + YMD[2] + '/' + YMD[1] + '/' + YMD[0] + ' (' + duree +' jours)</span>' +
+					/*'<p class="ui-li-aside">' + YMD[2] + '/' + YMD[1] + '/' + YMD[0] + '</p>' +*/
+					'<span class="ui-li-count"> En prêt depuis ' + (duree<2 ? duree +' jour' :  duree +' jours') + '</span>' +
 					'</a></li>');
 		
     	/*$content.find("a").click(function(){
@@ -217,18 +217,15 @@ function DB_getPret(tx, id) {
 //Affichage des détails du prêt dans le HTML
 function DB_getPret_success(tx, results) {	
 	console.log("exec query getPret");
-	var pret = results.rows.item(0);	
-	/*$('#detailcontent').append(
-	'<h2>' + pret.title + '</h2>' +
-	'<p><strong>' + pret.descName + '</strong></p>' +
-	'<p>' + pret.date + '</p>' +
-	'<input type="submit" value="Supprimer" data-theme="e" onclick="deletePret('+pret.id+')"/>');*/	
+	var pret = results.rows.item(0);
+	var YMD = pret.date.split("-");
+	
 	$('#Dtitle').empty();
 	$('#Dtitle').append(pret.title);
 	$('#DdescName').empty();
-	$('#DdescName').replaceWith(pret.descName);
+	$('#DdescName').append('Prêt accordé à ' + pret.descName);
 	$('#Ddate').empty();
-	$('#Ddate').replaceWith(pret.date);
+	$('#Ddate').append('Jour du prêt : '+ YMD[2] + '/' + YMD[1] + '/' + YMD[0]);
 	$('#Dbutton').click(function(){deletePret(pret.id);});
 	//$.mobile.changePage('index.html#detail', {transition: "none"});
 }	
