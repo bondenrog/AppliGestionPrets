@@ -243,7 +243,7 @@ function createPret(){
 		}, DB_transaction_error, DB_createPret_success);		
 }
 // Création d'un pret dans la base de données
-function DB_createPret(tx, intitule, contact, categorie) { // mettre params
+function DB_createPret(tx, intitule, contact, categorie) {
 	console.log("exec query createPret");
 	var sql = "INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('"+intitule+"','"+contact+"', date('now'),'"+categorie+"')";
 	tx.executeSql(sql);
