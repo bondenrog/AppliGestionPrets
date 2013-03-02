@@ -4,16 +4,20 @@ document.addEventListener("deviceready", onDeviceReady, false);
 //Cordova est prêt donc on lance le script
 function onDeviceReady() {
 
+	// Gestion du backbutton
 	document.addEventListener("backbutton", function(e){
+		//Si on est sur la page home ou consultation, on quitte
 		if( ($.mobile.activePage.is('#home')) || ($.mobile.activePage.is('#consultation')) ){
 		    e.preventDefault();
 		    navigator.app.exitApp();
 		}
+		// Sinon on revient en arrière
 		else {
 		    navigator.app.backHistory()
 		}
 		}, false);
 	
+	// Ouverture de la base de données
 	DB_openDatabase();
 
 	// Création de la base de données et création des différents éléments HTML
@@ -22,6 +26,7 @@ function onDeviceReady() {
 	// Récupération des contacts du téléphone
     getContacts();	
 
+    // Application prête à fonctionner donc on cache le splashscreen
 	navigator.splashscreen.hide();
 }
 
@@ -36,7 +41,12 @@ function DB_openDatabase(){
     console.log("database opened");
 }
 
-// Insertion de Prets pour le test de l'application
+//Erreur de base de données
+function DB_transaction_error(tx, error) {
+    alert("Database Error: " + error);
+}
+
+// Insertion de prêts pour le test de l'application
 function populateDB(){
 	console.log("populateDB");
 	DB_openDatabase();
@@ -44,7 +54,7 @@ function populateDB(){
 	updateListview();
 	db = null;
 }
-
+// Insertion de prêts dans la base de données
 function DB_populate(tx){
 	tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('MacBook','Francky Vincent', date('now', 'start of month'), 5)");
     tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('PC Vaio','Sarah Croche', date('now','-1 day'), 5)");
@@ -56,7 +66,6 @@ function DB_populate(tx){
     tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('50€','Brandon Mills', date('now', '-22 days'), 6)");
     tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Harry Potter','Harry Rose', date('now', '-8 days'), 1)");
 }
-
 function DB_populate_success(){
 	alert("INFO : La base de données a été remplie avec succès");
 }
@@ -97,15 +106,10 @@ function DB_createTables(tx)
     
     console.log("Table PRET created");
 }
-
-// Succès de la création des tables de la base de données
 function DB_createTables_success() {
+	// Succès de la création des tables de la base de données
+	// donc maj de la listview des prêts
 	updateListview();
-}
-
-// Erreur de base de données
-function DB_transaction_error(tx, error) {
-    alert("Database Error: " + error);
 }
 
 // Lecture des catégories dans la base de données
@@ -113,12 +117,11 @@ function DB_getCategories(tx) {
 	var sql = "SELECT * FROM Categorie";
 	tx.executeSql(sql, [], DB_getCategorie_success);
 }
-
-// Affichage des catégories dans le HTML
 function DB_getCategorie_success(tx, results) {
-    var len = results.rows.length;
 	console.log("exec query getCategorie");
+	var len = results.rows.length;
 	
+	// Affichage des catégories dans le HTML
 	$('#listeCategories').empty();
 	$('#listePrets').empty();
 	
@@ -128,6 +131,7 @@ function DB_getCategorie_success(tx, results) {
     	$('#listeCategories').append('<option value="'+cat.id+'">'+ cat.intitule + '</option>'); //liste catégorie page ajout
 		$('#listePrets').append('<li data-role="list-divider" id="'+cat.id+'">'+cat.intitule+'</li>'); //liste prets page consultation
     }
+    
     // on essaye un refresh car bcp de pb
 	try
 	{
@@ -144,49 +148,46 @@ function DB_getPrets(tx) {
 	var sql = "SELECT * FROM Pret ORDER BY date DESC";
 	tx.executeSql(sql, [], DB_getPrets_success);
 }
-
-// Affichage des prêts dans le HTML
 function DB_getPrets_success(tx, results) {
-    var len = results.rows.length;
-    
     console.log("exec query getPrets");
+	var len = results.rows.length;    
     
+    // Affichage des prêts dans le HTML
     for (var i=0; i<len; i++) {
-		//recuperation du pret courant
+		// Récupération du pret courant
     	var pret = results.rows.item(i);
     	
-		//recuperation date SQL du pret
+		// Récupération date SQL du pret
     	var YMD = pret.date.split("-");
         var sqlDate = new Date();
         sqlDate.setTime(0); // mise à zéro de l'heure
         sqlDate.setFullYear(parseInt(YMD[0]), parseInt(YMD[1]) - 1, parseInt(YMD[2]));
         
-		//recuperation date JS d'aujourd'hui
+		// Récupération date JS d'aujourd'hui
         var jsDateNow = new Date();
         jsDateNow.setTime(0); // mise à zéro de l'heure
         var dateNow = new Date();
         jsDateNow.setFullYear(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate());
         
-		//calcul durée
+		// Calcul de la durée en jours
+        // C'est pourquoi, on les a mis à la même heure :
+        // Un prêt enregistrer à 23h30, sera considéré comme datant d'un jour passé minuit
         var WNbJours = jsDateNow.getTime() - sqlDate.getTime();
-        var duree = Math.ceil(WNbJours/(1000*60*60*24));
+        var duree = Math.ceil(WNbJours/(86400000)); //86400000 = 1000*3600*24
         
     	console.log(pret.date + " - " + sqlDate + " - " + sqlDate.toLocaleDateString() + " - " + jsDateNow );
     	
+    	// Ajout du prêt dans la listview
     	$content = $('<li><a href="#detail" data-transition="none" onclick="getPret('+pret.id+')">' +
 					'<h2>' + pret.title + '</h2>' +
 					'<p><strong>' + pret.descName + '</strong></p>' +
 					/*'<p class="ui-li-aside">' + YMD[2] + '/' + YMD[1] + '/' + YMD[0] + '</p>' +*/
 					'<span class="ui-li-count"> En prêt depuis ' + (duree<2 ? duree +' jour' :  duree +' jours') + '</span>' +
-					'</a></li>');
-		
-    	/*$content.find("a").click(function(){
-		getPret(pret);
-		});*/	
-    	
+					'</a></li>');    	
 		$('#' + pret.id_categorie).after($content);
     }
-    // on essaye un refresh car bcp de pb
+    
+    // on essaye un refresh car bcp de problème
 	try
 	{
 		$('#listePrets').listview('refresh');
@@ -207,17 +208,16 @@ function getPret(id)
 	}, DB_transaction_error);
 	
 }
-
 //Lecture d'un prêt dans la base de données
 function DB_getPret(tx, id) {
 	var sql = "SELECT * FROM Pret WHERE id="+id;
 	tx.executeSql(sql, [], DB_getPret_success);
 }
-
-//Affichage des détails du prêt dans le HTML
 function DB_getPret_success(tx, results) {	
 	console.log("exec query getPret");
 	var pret = results.rows.item(0);
+		
+	//Affichage des détails du prêt dans le HTML
 	var YMD = pret.date.split("-");
 	
 	$('#Dtitle').empty();
@@ -228,30 +228,7 @@ function DB_getPret_success(tx, results) {
 	$('#Ddate').append('Jour du prêt : '+ YMD[2] + '/' + YMD[1] + '/' + YMD[0]);
 	$('#Dbutton').click(function(){deletePret(pret.id);});
 	getContact(pret.descName);
-	//$('[type="submit"]').button('refresh');
-	$('#btnTel').button("refresh");
-
 }	
-
-function validateForm(){
-
-  // si la valeur du champ prenom est non vide
-  if($('#intitule').val() == "" ){
-	  alert("Merci de saisir un intitulé !");
-	  return false;
-  }
-  else if($('#listeCategories').val() == "0"){
-	  alert("Merci de sélectionner une catégorie !");
-	  return false;
-  }
- else if($('#listeContacts').val() == "0"){
-	 alert("Merci de sélectionner un contact !");
-	 return false;
-  }
-  else {
-    return true;
-  }
-}
 
 // Création d'un prêt avec les informations du formulaire
 function createPret(){
@@ -265,14 +242,12 @@ function createPret(){
 			DB_createPret(tx, intitule, contact, categorie);
 		}, DB_transaction_error, DB_createPret_success);		
 }
-
 // Création d'un pret dans la base de données
 function DB_createPret(tx, intitule, contact, categorie) { // mettre params
 	console.log("exec query createPret");
 	var sql = "INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('"+intitule+"','"+contact+"', date('now'),'"+categorie+"')";
 	tx.executeSql(sql);
 }
-
 // Mise à jour de l'affichage des prêts
 function DB_createPret_success(){
 	updateListview();
@@ -291,17 +266,14 @@ function deletePret(id)
 	}, DB_transaction_error, DB_deletePret_success);
 
 }
-
 //Effacer un prêt dans la base de données
 function DB_deletePret(tx, id) {
 	var sql = "DELETE FROM Pret WHERE id="+id;
 	tx.executeSql(sql);
 }
-
 //Actions après suppression d'un prêt
 function DB_deletePret_success(tx, results) {
 	updateListview();
-	//window.location = 'index.html#consultation';
 	$.mobile.changePage('index.html#consultation', { transition: "none"});
 }	
 
@@ -309,7 +281,7 @@ function DB_deletePret_success(tx, results) {
 //	Gestion Contacts
 //**********************************//
 
-//Récupère les contacts du téléphone
+// Récupère les contacts du téléphone
 function getContacts()
 {
 	var options = new ContactFindOptions();
@@ -318,7 +290,6 @@ function getContacts()
 	var fields = ["displayName", "phoneNumbers"];
 	navigator.contacts.find(fields, getContactsSuccess, getContactsError, options);
 }
-
 // Insère les contacts du téléphone dans la liste
 function getContactsSuccess(contacts) {
 	
@@ -327,12 +298,12 @@ function getContactsSuccess(contacts) {
 		$('#listeContacts').append('<option value="'+ i+1 +'">' + contacts[i].displayName + '</option>');
 	}
 }
-
 // Erreur lors de la récupération des contacts du téléphone
 function getContactsError(contactError) {
 	alert('Error during loading phone contacts');
 }
 
+// Récupère les numéros de téléphone du contact
 function getContact(name)
 {
 	var options = new ContactFindOptions();
@@ -341,30 +312,51 @@ function getContact(name)
 	var fields = ["displayName", "phoneNumbers"];
 	navigator.contacts.find(fields, getContactSuccess, getContactError, options);
 }
-
-// Récupère les numéros de téléphone du contact
 function getContactSuccess(contacts) {
 	var numero = '';
 	for (var i=0; i<contacts.length; i++) {
         for (var j=0; j<contacts[i].phoneNumbers.length; j++) {
-           numero += '<p>'+contacts[i].phoneNumbers[j].type +' : <a href="tel:'+contacts[i].phoneNumbers[j].value+'" data-role="button">'+contacts[i].phoneNumbers[j].value+'</a></p>';
+           numero += '<p>'+contacts[i].phoneNumbers[j].type +' : <a href="tel:'+contacts[i].phoneNumbers[j].value+'">'+contacts[i].phoneNumbers[j].value+'</a></p>';
         }     
     }
 	
 	$('#DnumName').empty();
 	$('#DnumName').append(numero);
 }
-
 // Erreur lors de la récupération des contacts du téléphone
 function getContactError(contactError) {
 	alert('Error during loading phone contact');
 }
 
+
 //**********************************//
 // Divers
 //**********************************//
 
-function clearForm() {
+// Validation du formulaire
+function validateForm()
+{
+	  // si la valeur du champ prenom est non vide
+	  if($('#intitule').val() == "" ){
+		  alert("Merci de saisir un intitulé !");
+		  return false;
+	  }
+	  else if($('#listeCategories').val() == "0"){
+		  alert("Merci de sélectionner une catégorie !");
+		  return false;
+	  }
+	  else if($('#listeContacts').val() == "0"){
+		 alert("Merci de sélectionner un contact !");
+		 return false;
+	  }
+	  else {
+	    return true;
+	  }
+}
+
+// Effacement du formulaire
+function clearForm()
+{
 	$('#intitule').val("");
 	
 	$("#listeCategories").get(0).selectedIndex = 0;
@@ -374,7 +366,9 @@ function clearForm() {
 	$('#listeContacts').selectmenu('refresh');
 }
 
-function updateListview(){
+// Mise à jour de la listview prêt
+function updateListview()
+{
 	$('#listePrets').empty();
 	db.transaction(DB_getCategories, DB_transaction_error);
 	db.transaction(DB_getPrets, DB_transaction_error);
