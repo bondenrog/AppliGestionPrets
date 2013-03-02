@@ -175,7 +175,7 @@ function DB_getPrets_success(tx, results) {
         var WNbJours = jsDateNow.getTime() - sqlDate.getTime();
         var duree = Math.ceil(WNbJours/(86400000)); //86400000 = 1000*3600*24
         
-    	console.log(pret.date + " - " + sqlDate + " - " + sqlDate.toLocaleDateString() + " - " + jsDateNow );
+    	//console.log(pret.date + " - " + sqlDate + " - " + sqlDate.toLocaleDateString() + " - " + jsDateNow );
     	
     	// Ajout du prêt dans la listview
     	$content = $('<li><a onclick="getPret('+pret.id+')">' +
