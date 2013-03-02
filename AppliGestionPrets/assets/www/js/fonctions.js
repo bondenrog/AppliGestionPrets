@@ -118,7 +118,7 @@ function DB_getCategories(tx) {
 	tx.executeSql(sql, [], DB_getCategories_success);
 }
 function DB_getCategories_success(tx, results) {
-	console.log("exec query getCategorie");
+	console.log("exec query getCategories");
 	var len = results.rows.length;
 	
 	// Affichage des catégories dans le HTML
