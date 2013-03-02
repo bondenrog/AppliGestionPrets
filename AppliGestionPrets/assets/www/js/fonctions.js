@@ -56,15 +56,15 @@ function populateDB(){
 }
 // Insertion de prêts dans la base de données
 function DB_populate(tx){
-	tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('MacBook','Francky Vincent', date('now', 'start of month'), 5)");
-    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('PC Vaio','Sarah Croche', date('now','-1 day'), 5)");
-    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('ZZ Top','Steven Wells', date('now', '-2 days'), 2)");
+	tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('MacBook','Francky Vincent', date('now', 'start of month'), 3)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('PC Vaio','Sarah Croche', date('now','-1 day'), 3)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('ZZ Top','Steven Wells', date('now', '-2 days'), 6)");
     tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Cartes','Adam Smith', date('now', '-24 days'), 4)");
     tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Monopoly','Jean Michel', date('now', '-58 days'), 4)");
-    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Cable USB','Christine Wells', date('now', '-24 days'), 5)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Cable USB','Christine Wells', date('now', '-24 days'), 3)");
     tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Audi TT','Bobby Belair', date('now', '-74 days'), 7)");
-    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('50€','Brandon Mills', date('now', '-22 days'), 6)");
-    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Harry Potter','Harry Rose', date('now', '-8 days'), 1)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('50€','Brandon Mills', date('now', '-22 days'), 1)");
+    tx.executeSql("INSERT INTO Pret (title, descName, date, id_categorie) VALUES ('Harry Potter','Harry Rose', date('now', '-8 days'), 5)");
 }
 function DB_populate_success(){
 	alert("INFO : La base de données a été remplie avec succès");
@@ -85,12 +85,12 @@ function DB_createTables(tx)
     
     console.log("Table CATEGORIE created");
     
-    tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Livres')");
-    tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Musiques')");
-	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Films')");
-	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Jeux')");
+    tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Argent')");
+    tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Films')");
 	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Informatique')");
-	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Argent')");
+	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Jeux')");
+	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Livres')");
+	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Musiques')");
 	tx.executeSql("INSERT INTO Categorie (intitule) VALUES ('Autres')");  
 	
 	var sql = 
