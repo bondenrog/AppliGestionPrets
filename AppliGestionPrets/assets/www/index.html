@@ -12,11 +12,9 @@
         <script type="text/javascript" src="js/cordova-2.4.0.js"></script>
 		<script type="text/javascript" src="js/jquery/jquery-1.8.2.js"></script>
         <script type="text/javascript" src="js/jquery/jquery.mobile-1.2.0.js"></script>
-		<script type="text/javascript" src="js/index.js"></script>
+
 		<script type="text/javascript" src="js/fonctions.js"></script>
-        <script type="text/javascript">		    
-			//fonctions
-        </script>
+
 	</head>
     <body>
     
@@ -44,7 +42,7 @@
 				<ul data-role="listview">
 					<li data-role="list-divider" role="heading">Sources</li>
 					<li><a href="#" onclick="window.open('https://github.com/bondenrog/AppliGestionPrets', '_system');">Lien externe</a></li>
-					<li><input type="text" name="lien" id="lien" readonly="readonly" value="https://github.com/bondenrog/AppliGestionPrets"/></li>				 
+					<li><input type="text" readonly="readonly" value="https://github.com/bondenrog/AppliGestionPrets"/></li>				 
 				</ul>
             </div>
 			
@@ -56,7 +54,8 @@
 						<li><a href="#ajout" data-icon="plus" data-transition="none">Ajouter</a></li>
 					</ul>
 				</div>
-			</div>		
+			</div>
+					
         </div>
         <!-- /page -->
         
@@ -96,7 +95,6 @@
             </div>
 			
             <div data-role="content">
-
 				<form action="javascript:createPret()" onsubmit="javascript:return validateForm()">
 					<div data-role="fieldcontain">
 						<label for="intitule">Intitulé :</label>
@@ -118,20 +116,19 @@
 					</div>	
 					
 					<input type="submit"  data-theme="a" value="Valider"/>
-
-				</form>	
-				
+				</form>					
 			</div>
 			
 			<div data-role="footer" data-position="fixed" data-id="footer">
 				<div data-role="navbar" data-iconpos="top">
 					<ul>
-						<li><a href="#home" id="home" data-icon="home" data-transition="none">Accueil</a></li>
-						<li><a href="#consultation" id="consultation" data-icon="grid" data-transition="none" >Consulter</a></li>
-						<li><a href="#ajout" id = "ajout" data-icon="plus" data-transition="none" class="ui-btn-active ui-state-persist">Ajouter</a></li>
+						<li><a href="#home" data-icon="home" data-transition="none">Accueil</a></li>
+						<li><a href="#consultation" data-icon="grid" data-transition="none" >Consulter</a></li>
+						<li><a href="#ajout" data-icon="plus" data-transition="none" class="ui-btn-active ui-state-persist">Ajouter</a></li>
 					</ul>
 				</div>
-			</div>		
+			</div>
+					
         </div>
         <!-- /page -->
                
@@ -152,6 +149,7 @@
 				<br/>
 				<a id="Dbutton" data-role="button" data-icon="delete" data-theme="e" data-inline="true">Supprimer</a>	  
           	</div>
+          	
         </div>
         <!-- /page --> 
         	
