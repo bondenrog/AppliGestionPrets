@@ -4,11 +4,10 @@ document.addEventListener("deviceready", onDeviceReady, false);
 //Cordova est prêt donc on lance le script
 function onDeviceReady()
 {
-
 	// Gestion du backbutton
 	document.addEventListener("backbutton", function(e){
 		//Si on est sur la page home ou consultation, on quitte
-		if( ($.mobile.activePage.is('#home')) || ($.mobile.activePage.is('#consultation')) ){
+		if( ($.mobile.activePage.is('#home')) || ($.mobile.activePage.is('#consultation')) ) {
 		    e.preventDefault();
 		    navigator.app.exitApp();
 		}
@@ -16,7 +15,7 @@ function onDeviceReady()
 		else {
 		    navigator.app.backHistory()
 		}
-		}, false);
+	}, false);
 	
 	// Ouverture de la base de données
 	DB_openDatabase();
@@ -142,12 +141,10 @@ function DB_getCategories_success(tx, results)
     }
     
     // on essaye un refresh car bcp de pb
-	try
-	{
+	try	{
 		$('#listePrets').listview('refresh');
 	}
-	catch(err)
-	{
+	catch(err) {
 		console.log(err.message);
 	}
 }
@@ -197,12 +194,10 @@ function DB_getPrets_success(tx, results) {
     }
     
     // on essaye un refresh car bcp de problème
-	try
-	{
+	try	{
 		$('#listePrets').listview('refresh');
 	}
-	catch(err)
-	{
+	catch(err) {
 		console.log(err.message);
 	}
 }
