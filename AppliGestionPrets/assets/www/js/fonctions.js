@@ -115,9 +115,9 @@ function DB_createTables_success() {
 // Lecture des catégories dans la base de données
 function DB_getCategories(tx) {
 	var sql = "SELECT * FROM Categorie";
-	tx.executeSql(sql, [], DB_getCategorie_success);
+	tx.executeSql(sql, [], DB_getCategories_success);
 }
-function DB_getCategorie_success(tx, results) {
+function DB_getCategories_success(tx, results) {
 	console.log("exec query getCategorie");
 	var len = results.rows.length;
 	
