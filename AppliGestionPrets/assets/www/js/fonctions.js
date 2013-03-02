@@ -178,7 +178,7 @@ function DB_getPrets_success(tx, results) {
     	console.log(pret.date + " - " + sqlDate + " - " + sqlDate.toLocaleDateString() + " - " + jsDateNow );
     	
     	// Ajout du prêt dans la listview
-    	$content = $('<li><a href="#detail" data-transition="none" onclick="getPret('+pret.id+')">' +
+    	$content = $('<li><a onclick="getPret('+pret.id+')">' +
 					'<h2>' + pret.title + '</h2>' +
 					'<p><strong>' + pret.descName + '</strong></p>' +
 					/*'<p class="ui-li-aside">' + YMD[2] + '/' + YMD[1] + '/' + YMD[0] + '</p>' +*/
@@ -216,7 +216,10 @@ function DB_getPret(tx, id) {
 function DB_getPret_success(tx, results) {	
 	console.log("exec query getPret");
 	var pret = results.rows.item(0);
-		
+	
+	//Lancement recherche du contact
+	getContact(pret.descName);
+	
 	//Affichage des détails du prêt dans le HTML
 	var YMD = pret.date.split("-");
 	
@@ -227,7 +230,8 @@ function DB_getPret_success(tx, results) {
 	$('#Ddate').empty();
 	$('#Ddate').append('Jour du prêt : '+ YMD[2] + '/' + YMD[1] + '/' + YMD[0]);
 	$('#Dbutton').click(function(){deletePret(pret.id);});
-	getContact(pret.descName);
+	
+	$.mobile.changePage('index.html#detail', { transition: "none"});
 }	
 
 // Création d'un prêt avec les informations du formulaire
